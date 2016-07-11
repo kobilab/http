@@ -46,7 +46,7 @@
 		 */
 		public function create()
 		{
-			return view('customers.companies.create', $this->data);
+			return view('zahmetsizce::orders.customers.create', $this->data);
 		}
 		
 		/**
@@ -56,39 +56,12 @@
 		 */
 		public function store()
 		{
-			$veriler = [
-				'company_code'	=> Input::get('companyCode'),
-				'name'			=> Input::get('name')
-			];
+			$result = Companies::setFromAllInput()->setRulesForTable('companies');
 
-			$kurallar = [
-				'company_code'	=> 'required|max:16|min:1|unique:companies,company_code,NULL,id,deleted_at,NULL',
-				'name'			=> 'required|max:128|min:3'
-			];
-
-			$okunakli = [
-				'company_code'	=> 'Müşteri kodu',
-				'name'			=> 'Müşteri adı'
-			];
-
-			$validator = Validator::make($veriler, $kurallar);
-			$validator->setAttributeNames($okunakli);
-
-			if ($validator->fails()) {
-				Messages::error($validator->errors()->all());
-
-				return redirect()
-						->route('newCompany')
-						->withMessages(Messages::all())
-						->withInput(Input::all());
+			if(!$result->autoCreate()) {
+				return redirectTo('newCompany')->withErrors($result->errors());
 			} else {
-				Companies::create($veriler);
-				
-				Messages::success('Müşteri eklendi.');
-
-				return redirect()
-						->route('companies')
-						->withMessages(Messages::all());
+				return redirectTo('companies');
 			}
 		}
 
@@ -102,7 +75,7 @@
 		{
 			$this->data['detail'] = Companies::find($companyId);
 
-			return view('customers.companies.edit', $this->data);
+			return view('zahmetsizce::orders.customers.edit', $this->data);
 		}
 
 		/**
@@ -113,39 +86,12 @@
 		 */
 		public function update($companyId)
 		{
-			$veriler = [
-				'company_code'	=> Input::get('companyCode'),
-				'name'			=> Input::get('name')
-			];
+			$result = Companies::setFromAllInput()->setId($companyId)->setRulesForTable('companies');
 
-			$kurallar = [
-				'company_code'	=> 'required|max:16|min:1|unique:companies,company_code,'.$companyId.',id,deleted_at,NULL',
-				'name'			=> 'required|max:128|min:3'
-			];
-
-			$okunakli = [
-				'company_code'	=> 'Müşteri kodu',
-				'name'			=> 'Müşteri adı'
-			];
-
-			$validator = Validator::make($veriler, $kurallar);
-			$validator->setAttributeNames($okunakli);
-
-			if ($validator->fails()) {
-				Messages::error($validator->errors()->all());
-
-				return redirect()
-						->route('editCompany', $companyId)
-						->withMessages(Messages::all())
-						->withInput(Input::all());
+			if (!$result->autoUpdate()) {
+				return redirectTo('editCompany', $companyId);
 			} else {
-				Companies::find($companyId)->update($veriler);
-				
-				Messages::success('Müşteri düzenlendi.');
-
-				return redirect()
-						->route('companies')
-						->withMessages(Messages::all());
+				return redirectTo('companies');
 			}
 		}
 
@@ -159,7 +105,7 @@
 		{
 			$this->data['detail'] = Companies::find($companyId);
 
-			return view('customers.companies.show', $this->data);
+			return view('zahmetsizce::orders.customers.show', $this->data);
 		}
 		
 		/**
@@ -172,11 +118,7 @@
 		{
 			Companies::find($companyId)->delete();
 
-			Messages::success('Müşteri silindi.');
-
-			return redirect()
-					->route('companies')
-					->withMessages(Messages::all());
+			return redirectTo('companies');
 		}
 		
 	}

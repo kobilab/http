@@ -6,7 +6,7 @@
 	{{tool(trans('e.new'), 'newOrder')}}
 @endsection
 
-@section('boxBody')
+@section('content')
 	<table class="table table-striped table-bordered table-hover order-column" id="sample_1">
 		<thead>
 			<tr>

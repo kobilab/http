@@ -6,7 +6,7 @@
 
 @section('boxBodyClass') form @endsection
 
-@section('boxBody')
+@section('content')
 	{{open(['addPartToOrder', $detail['id']])}}
 		<div class="form-body">
 			{{select(trans('e.part'), 'partId', listThem($parts, 'id', 'title'))}}

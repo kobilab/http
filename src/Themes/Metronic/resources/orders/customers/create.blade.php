@@ -1,12 +1,6 @@
 @extends('zahmetsizce::themes.main')
 
-@section('boxTools')
-	{{tool(trans('e.cancel'), 'companies')}}
-@endsection
-
-@section('boxBodyClass') form @endsection
-
-@section('boxBody')
+@section('content')
 	{{open('newCompany')}}
 		<div class="form-body">
 			{{text(trans('e.companyCode'), 'companyCode')}}
@@ -24,4 +18,13 @@
 
 @section('pageTitle')
 	{{trans('e.newCompany')}}
+@endsection
+
+@section('breadcrumb')
+{{breadcrumb([
+	['Home', 'homePage'],
+	['Ürünler & Üretim', '#'],
+	['Parçalar', 'parts'],
+	['Yeni']
+])}}
 @endsection

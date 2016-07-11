@@ -33,12 +33,12 @@
 		 * @param integer $siparisId Sipariş Id
 		 * @return view
 		 */
-		public function addPartToOrder($siparisId)
+		public function create($siparisId)
 		{
 			$this->data['parts'] = Parts::all();
 			$this->data['detail'] = Orders::find($siparisId);
 
-			return view('zahmetsizce::customers.orders.addPart', $this->data);
+			return view('zahmetsizce::orders.orders.details.addPart', $this->data);
 		}
 
 		/**
@@ -47,53 +47,24 @@
 		 * @param  integer $siparisId Sipariş Id
 		 * @return redirect
 		 */
-		public function storePartToOrder($orderId)
+		public function store($orderId)
 		{
 			$result = OrderDetails::setFromAllInput()->setRulesForTable('order_details');
 
 			if (!$result->autoCreate()) {
-				return redirectTo('newLot');
+				return redirectTo('createOrderDetail', $orderId);
 			} else {
-				return redirectTo('lots');
+				return redirectTo('orders');
 			}
 
-			$veriler = [
+			/*$veriler = [
 				'order_id'	=> $orderId,
 				'part_id'	=> Input::get('partId'),
 				'quantity'	=> Input::get('quantity'),
 				'remainder'	=> Input::get('quantity'),
 				'reserved'	=> 0
-			];
+			];*/
 
-			$kurallar = [
-				'quantity'	=> 'required|numeric',
-				'part_id'	=> 'required'
-			];
-
-			$okunakli = [
-				'quantity'	=> 'Adet',
-				'part_id'	=> 'Parça'
-			];
-
-			$validator = Validator::make($veriler, $kurallar);
-			$validator->setAttributeNames($okunakli);
-
-			if ($validator->fails()) {
-				Messages::error($validator->errors()->all());
-
-				return redirect()
-						->route('addPartToOrder', $orderId)
-						->withMessages(Messages::all())
-						->withInput(Input::all());
-			} else {
-				OrderDetails::create($veriler);
-				
-				Messages::success('Siparişe parça eklendi.');
-
-				return redirect()
-						->route('showOrder', $orderId)
-						->withMessages(Messages::all());
-			}
 		}
 
 		/**
@@ -102,11 +73,11 @@
 		 * @param  integer $siparisDetayId Sipariş Detay Id
 		 * @return view
 		 */
-		public function partEdit($orderDetailId)
+		public function edit($orderDetailId)
 		{
 			$this->data['detail'] = OrderDetails::find($orderDetailId);
 
-			return view('customers.orders.partEdit', $this->data);
+			return view('zahmetsizce::orders.orders.details.partEdit', $this->data);
 		}
 
 		/**
@@ -117,38 +88,14 @@
 		 * @param  integer $siparisDetayId Sipariş Detay Id
 		 * @return redirect
 		 */
-		public function partUpdate($orderDetailId)
+		public function update($orderDetailId)
 		{
-			$veriler = [
-				'quantity' => Input::get('quantity')
-			];
+			$result = OrderDetails::setFromAllInput()->setId($partId)->setRulesForTable('order_detail_edit');
 
-			$kurallar = [
-				'quantity' => 'required|numeric'
-			];
-
-			$okunakli = [
-				'quantity' => 'Adet'
-			];
-
-			$validator = Validator::make($veriler, $kurallar);
-			$validator->setAttributeNames($okunakli);
-
-			if ($validator->fails()) {
-				Messages::error($validator->errors()->all());
-
-				return redirect()
-						->route('editPartOfOrder', $orderDetailId)
-						->withMessages(Messages::all())
-						->withInput(Input::all());
+			if (!$result->autoUpdate()) {
+				return redirectTo('editOrderDetail', $partId);
 			} else {
-				OrderDetails::find($orderDetailId)->update($veriler);
-				
-				Messages::success('Sipariş parçası düzenlendi.');
-
-				return redirect()
-						->back()
-						->withMessages(Messages::all());
+				return redirectTo('orders');
 			}
 		}
 
@@ -160,15 +107,11 @@
 		 * @param  integer $siparisDetayId Sipariş Detay Id
 		 * @return redirect
 		 */
-		public function partDelete($orderDetailId)
+		public function delete($orderDetailId)
 		{
 			OrderDetails::find($orderDetailId)->delete();
 
-			Messages::success('Siparisten parça silindi.');
-
-			return redirect()
-					->route('orders')
-					->withMessages(Messages::all());
+			return redirectTo('orders');
 		}
 
 	}

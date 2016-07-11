@@ -1,13 +1,9 @@
 @extends('zahmetsizce::themes.main')
 
-@section('boxTools')
-	{{$tools}}
+@section('content')
+	Gelecek
 @endsection
 
-@section('boxBody')
-	{{$body}}
-@endsection
-
-@section('pageTitle')
-	{{$title}}
+@section('title')
+	Müşteri İncele
 @endsection

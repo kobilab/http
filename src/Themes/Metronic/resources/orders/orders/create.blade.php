@@ -6,7 +6,7 @@
 
 @section('boxBodyClass') form @endsection
 
-@section('boxBody')
+@section('content')
 	{{open('newOrder')}}
 		<div class="form-body">
 			{{text(trans('e.orderCod'), 'orderCode')}}

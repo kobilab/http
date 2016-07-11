@@ -6,7 +6,7 @@
 	{{tool(trans('e.orderCheck'), 'checkOrder', $detail['id'])}}
 @endsection
 
-@section('boxBody')
+@section('content')
 	<table class="table table-bordered">
 		<tr>
 			<th>{{trans('e.orderCode')}}</th>

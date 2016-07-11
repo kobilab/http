@@ -2,24 +2,10 @@
 
 	namespace KobiLab\Http\Controllers\Orders;
 
-	# Dış paketler
-	use Illuminate\Support\Facades\DB;
-	use Illuminate\Support\Facades\Input;
-	use Illuminate\Support\Facades\Validator;
 	use Illuminate\Routing\Controller;
 
-
-	# Sistem içerisindeki tablolar
-	use App\Tables\Parts;
-	use App\Tables\Companies;
-	use App\Tables\OrderDetails;
-	use App\Tables\Orders;
-	use App\Tables\Lots;
-
-	# Sistem paketleri
-	use App\Facades\Messages;
-	use App\Facades\Transactions;
-
+	use KobiLab\Orders;
+	use KobiLab\Companies;
 	/**
 	 * Siparişlerle alakalı işlemleri yapan sınıf
 	 * @see tamamlanmamış, tamamlanmış gibi seçenekler eklenebilir
@@ -46,25 +32,12 @@
 		 * 
 		 * @return view
 		 */
-		public function orders()
+		public function index()
 		{
-			$this->data['orders'] = Transactions::ordersToBeListOnOrdersPage();
+			$this->data['orders'] = Orders::all();
 			$this->data['third'] = 'accordingToOrders';
 
-			return view('customers.orders.orders', $this->data);
-		}
-
-		/**
-		 * Siparişleri Partse göre listeleme yarayan method
-		 * 
-		 * @return view
-		 */
-		public function parts()
-		{
-			$this->data['orders'] = Transactions::ordersToBeListAccordingToPartsOnOrdersPage();
-			$this->data['third'] = 'accordingToParts';
-
-			return view('customers.orders.items', $this->data);
+			return view('zahmetsizce::orders.orders.list', $this->data);
 		}
 		
 		/**
@@ -74,9 +47,9 @@
 		 */
 		public function create()
 		{
-			$this->data['companies'] = Transactions::getCompaniesForNewOrUpdateOrder();
+			$this->data['companies'] = Companies::all();
 
-			return view('customers.orders.create', $this->data);
+			return view('zahmetsizce::orders.orders.create', $this->data);
 		}
 
 		/**
@@ -86,27 +59,13 @@
 		 */
 		public function store()
 		{
-			$result = Transactions::createNewOrder();
+			$result = Orders::setFromAllInput()->setRulesForTable('orders');
 
-			if (!$result) {
+			if (!$result->autoCreate()) {
 				return redirectTo('newOrder');
 			} else {
 				return redirectTo('orders');
 			}
-		}
-
-		/**
-		 * Girilen siparişin Partsinin sistem içerisinde olup olmadığını kontrol etmeye yarayan ve listeleyen method
-		 * 
-		 * @param  integer $siparisId Sipariş Id
-		 * @return view
-		 */
-		public function check($orderId)
-		{
-			$this->data['detail'] = Transactions::getOrder($orderId);
-			$this->data['toplamlar'] = Transactions::checkOrderForAvailibleLot($orderId);
-
-			return view('customers.orders.check', $this->data);
 		}
 
 		/**
@@ -117,9 +76,9 @@
 		 */
 		public function show($orderId)
 		{
-			$this->data['detail'] = Transactions::getOrder($orderId);
+			$this->data['detail'] = Orders::find($orderId);
 
-			return view('customers.orders.show', $this->data);
+			return view('zahmetsizce::orders.orders.show', $this->data);
 		}
 
 		/**
@@ -130,10 +89,10 @@
 		 */
 		public function edit($orderId)
 		{
-			$this->data['detail'] = Transactions::getOrder($orderId);
-			$this->data['companies'] = Transactions::getCompaniesForNewOrUpdateOrder();
+			$this->data['detail'] = Orders::find($orderId);
+			$this->data['companies'] = Companies::all();
 
-			return view('customers.orders.edit', $this->data);
+			return view('zahmetsizce::orders.orders.edit', $this->data);
 		}
 
 		/**
@@ -144,12 +103,12 @@
 		 */
 		public function update($orderId)
 		{
-			$result = Transactions::editOrder($orderId);
+			$result = Orders::setFromAllInput()->setId($orderId)->setRulesForTable('orders');
 
-			if (!$result) {
+			if (!$result->autoUpdate()) {
 				return redirectTo('editOrder', $orderId);
 			} else {
-				return redirectTo('showOrder', $orderId);
+				return redirectTo('orders');
 			}
 		}
 
@@ -161,9 +120,9 @@
 		 */
 		public function delete($orderId)
 		{
-			Transactions::deleteOrder($orderId);
+			Orders::delete($orderId);
 
-			return redirectTo('homePage');
+			return redirectTo('orders');
 		}
 
 
