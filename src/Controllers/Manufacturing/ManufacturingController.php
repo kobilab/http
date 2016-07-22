@@ -4,8 +4,12 @@
 
 	use Illuminate\Routing\Controller;
 
+	use PHPExcel; 
+	use PHPExcel_IOFactory;
 	use KobiLab\ProductionControl;
 	use KobiLab\ProductionOrders;
+	use KobiLab\WorkTypes;
+	use KobiLab\WorkCenters;
 	use KobiLab\Parts;
 	use KobiLab\ProductionOrderRotations;
 	use KobiLab\ProductionOrderNeededParts;
@@ -167,7 +171,7 @@
 			$kurallar = [];
 			$okunakli = [];
 
-			foreach ($detay->getUygunLotlar as $each) {
+			foreach ($detay->getAvailableLots as $each) {
 				$gelenVeriler[$each['id'].'lot'] = Input::get($each['id'].'lot');
 				$kurallar[$each['id'].'lot'] = 'required|numeric|between:0,'.$each['quantity'];
 				$okunakli[$each['id'].'lot'] = $each['lot_code'];
@@ -177,7 +181,7 @@
 			$validator->setAttributeNames($okunakli);
 
 			$toplam = 0;
-			foreach ($detay->getUygunLotlar as $e) {
+			foreach ($detay->getAvailableLots as $e) {
 				if (Input::get($e['id'].'lot')!=0) {
 					$toplam = $toplam + Input::get($e['id'].'lot');
 				}
@@ -224,13 +228,46 @@
 
 		public function jobList($workTypeId)
 		{
+			$this->data['detail'] = WorkTypes::find($workTypeId);
 			$this->data['list'] = ProductionOrderRotations::where('work_type_id', $workTypeId)->get();
 
 			return view('zahmetsizce::manufacturing.joblist', $this->data);
 		}
 
+		public function getOutputJobList($workTypeId)
+		{
+define('EOL',(PHP_SAPI == 'cli') ? PHP_EOL : '<br />');
+/** Include PHPExcel */
+// Create new PHPExcel object
+$objPHPExcel = new PHPExcel();
+// Set document properties
+$objPHPExcel->getProperties()->setCreator("Maarten Balliauw")
+							 ->setLastModifiedBy("Maarten Balliauw")
+							 ->setTitle("PHPExcel Test Document")
+							 ->setSubject("PHPExcel Test Document")
+							 ->setDescription("Test document for PHPExcel, generated using PHP classes.")
+							 ->setKeywords("office PHPExcel php")
+							 ->setCategory("Test result file");
+// Add some data
+$k = 2;
+foreach(ProductionOrderRotations::where('work_type_id', $workTypeId)->get() as $emir) {
+	$objPHPExcel->setActiveSheetIndex(0)
+	            ->setCellValue('A'.$k, $emir->getProductionOrder['production_order_code'])
+	            ->setCellValue('B'.$k, $emir->getPart['part_code'])
+	            ->setCellValue('C'.$k, 'Hello')
+	            ->setCellValue('D'.$k, 'world!');
+	$k++;
+}
+$objPHPExcel->setActiveSheetIndex(0);
+// Save Excel 2007 file
+$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+$objWriter->save(str_replace('.php', '.xlsx', __FILE__));
+return response()->file(__DIR__.'/ManufacturingController.xlsx');
+		}
+
 		public function workCenterList($workCenterId)
 		{
+			$this->data['detail'] = WorkCenters::find($workCenterId);
 			$this->data['list'] = ProductionOrderRotations::where('work_center_id', $workCenterId)->get();
 
 			return view('zahmetsizce::manufacturing.centerlist', $this->data);

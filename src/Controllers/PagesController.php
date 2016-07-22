@@ -9,11 +9,7 @@
 
 	class PagesController extends Controller
 	{
-		/**
-		 * İtemleri listelemeye yarayan method
-		 * 
-		 * @return view
-		 */
+
 		public function index()
 		{
 			$this->data = [

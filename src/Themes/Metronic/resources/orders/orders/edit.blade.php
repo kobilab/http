@@ -1,16 +1,12 @@
 @extends('zahmetsizce::themes.main')
 
-@section('boxTools')
-	{{tool(trans('e.cancel'), 'showOrder', $detail['id'])}}
-@endsection
-
 @section('boxBodyClass') form @endsection
 
 @section('content')
 	{{open(['editOrder', $detail['id']])}}
 		<div class="form-body">
-			{{text(trans('e.orderCode'), 'orderCode', $detail['order_code'])}}
-			{{select(trans('e.company'), 'companyId', listThem($companies, 'id', 'name'), $detail['company_id'])}}
+			{{text(trans('e.orderCode'), 'order_code', $detail['order_code'])}}
+			{{select(trans('e.company'), 'company_id', listThem($companies, 'id', 'name'), $detail['company_id'])}}
 		</div>
 		<div class="form-actions">
 			<div class="row">

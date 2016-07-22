@@ -29,9 +29,9 @@
 								@endif
 							</td>
 							<td>
-								@foreach($k->emirId($detail['id'])->itemId($k['part_id'])->get() as $key => $e)
+								@foreach($k->productionOrderId($detail['id'])->partId($k['part_id'])->get() as $key => $e)
 									{{$e->getPart['title']}}
-									@if(isset($k->emirId($detail['id'])->itemId($k['part_id'])->get()[$key+1]))
+									@if(isset($k->productionOrderId($detail['id'])->partId($k['part_id'])->get()[$key+1]))
 										,
 									@endif
 								@endforeach
@@ -44,7 +44,7 @@
 										<ul class="dropdown-menu" role="menu">
 										<li>
 											@if($k['remainder']>0)
-												@if($k->getUygunLotlar->count()>0)
+												@if($k->getAvailableLots->count()>0)
 													<a href="{{route('consumeProductionNeededParts', $k['id'])}}">Tüket</a>
 												@else
 													Depoda tanımlı parça yok
@@ -66,9 +66,9 @@
 								Üretimin Alt Parçası
 							</td>
 							<td>
-								@foreach($k->emirId($detail['id'])->itemId($k['part_id'])->get() as $key => $e)
+								@foreach($k->productionOrderId($detail['id'])->partId($k['part_id'])->get() as $key => $e)
 									{{$e->getPart['title']}}
-									@if(isset($k->emirId($detail['id'])->itemId($k['part_id'])->get()[$key+1]))
+									@if(isset($k->productionOrderId($detail['id'])->partId($k['part_id'])->get()[$key+1]))
 										,
 									@endif
 								@endforeach
@@ -81,7 +81,7 @@
 										<ul class="dropdown-menu" role="menu">
 										<li>
 											@if($k['remainder']>0)
-												@if($k->getUygunLotlar->count()>0)
+												@if($k->getAvailableLots->count()>0)
 													<a href="{{route('consumeProductionNeededParts', $k['id'])}}">Tüket</a>
 												@else
 													Depoda tanımlı parça yok

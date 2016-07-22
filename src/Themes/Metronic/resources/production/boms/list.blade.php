@@ -67,7 +67,7 @@
 @section('breadcrumb')
 {{breadcrumb([
 	['Home', 'homePage'],
-	['Ürünler & Üretim', '#'],
+	['Üretim Yapılandırma', '#'],
 	['Ürün Ağaçları']
 ])}}
 @endsection
@@ -111,7 +111,7 @@ var TableDatatablesManaged = function () {
 				[5, 15, 20, "All"] // change per page values here
 			],
 			// set the initial value
-			"pageLength": 5,			
+			"pageLength": 10,			
 			"pagingType": "bootstrap_full_number",
 			"order": [
 				[1, "asc"]

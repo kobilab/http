@@ -3,7 +3,7 @@
 @set('datatablesContent', true)
 
 @section('content')
-<h3 class="page-title"> Üretim Emirleri </h3>
+<h3 class="page-title"> {{$detail['title']}} İş Merkezinde Yapılacak İşler </h3>
 <div class="row">
 	<div class="col-md-12">
 		<table class="table table-striped table-bordered table-hover order-column" id="sample_1">

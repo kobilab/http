@@ -1,0 +1,4 @@
+AuthController
+
+	auth.login
+		Giriş sayfası görevi görecek iki tane input olacak biri username diğeri password isimleriyle post edilecek adres login

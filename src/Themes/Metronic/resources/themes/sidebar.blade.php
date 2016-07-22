@@ -45,9 +45,28 @@
 								<span class="title">İmalat</span>
 							</a>
 						</li>
+						<li class="nav-item @if(isset($theme['first']) and $theme['first'] == 'crm') active @endif">
+							<a href="javascript:;" class="nav-link nav-toggle">
+								<i class="fa fa-opencart"></i>
+								<span class="title">Müşteriler</span>
+								<span class="arrow"></span>
+							</a>
+							<ul class="sub-menu">
+								<li class="nav-item @if(isset($theme['second']) and $theme['second'] == 'company') active @endif">
+									<a href="{{route('companies')}}" class="nav-link ">
+										<span class="title">Müşteriler</span>
+									</a>
+								</li>
+								<li class="nav-item @if(isset($theme['second']) and $theme['second'] == 'order') active @endif"">
+									<a href="{{route('orders')}}" class="nav-link ">
+										<span class="title">Siparişler</span>
+									</a>
+								</li>
+							</ul>
+						</li>
 						<li class="nav-item  @if(isset($theme['first']) and $theme['first'] == 'inventory') active @endif">
 							<a href="javascript:;" class="nav-link nav-toggle">
-								<i class="fa fa-industry"></i>
+								<i class="fa fa-th"></i>
 								<span class="title">Depo</span>
 								<span class="arrow"></span>
 							</a>
@@ -67,7 +86,7 @@
 						<li class="nav-item last @if(isset($theme['first']) and $theme['first'] == 'production') active @endif">
 							<a href="javascript:;" class="nav-link nav-toggle">
 								<i class="fa fa-bolt"></i>
-								<span class="title">Ürünler & Üretim</span>
+								<span class="title">Üretim Yapılandırma</span>
 								<span class="arrow"></span>
 							</a>
 							<ul class="sub-menu">

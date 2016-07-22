@@ -14,7 +14,7 @@
 		<tr>
 			<th>Rota Detayları</th>
 			<td>
-				@if($detail->getRotaDetaylari->count()>0)
+				@if($detail->getRouteDetails->count()>0)
 					<table class="table table-bordered">
 						<thead>
 							<tr>
@@ -23,10 +23,10 @@
 							</tr>
 						</thead>
 						<tbody>
-							@foreach($detail->getRotaDetaylari as $e)
+							@foreach($detail->getRouteDetails as $e)
 								<tr>
-									<td>{{$e['operation']}}</td>
-									<td>{{edit('editRouteDetail', $e['id'])}} {{sil('deleteRouteDetail', $e['id'])}}</td>
+									<td>{{$e->getWorkType['title']}}</td>
+									<td>İşlem Yok</td>
 								</tr>
 							@endforeach
 						</tbody>
@@ -39,7 +39,7 @@
 		<tr>
 			<th>Tanımlı Olduğu Bomlar</th>
 			<td>
-				@if($detail->getTanimliBomlar->count()>0)
+				@if($detail->getDefinedBoms->count()>0)
 					<table class="table table-bordered">
 						<thead>
 							<tr>
@@ -48,10 +48,10 @@
 							</tr>
 						</thead>
 						<tbody>
-							@foreach($detail->getTanimliBomlar as $e)
+							@foreach($detail->getDefinedBoms as $e)
 								<tr>
 									<td>{{$e->getBom['title']}}</td>
-									<td>{{tableTool('Kaldır', 'removeConnectionBomRoute', $e['id'])}}</td>
+									<td>{{linka('Kaldır', 'removeConnectionBomRoute', $e['id'])}}</td>
 								</tr>
 							@endforeach
 						</tbody>
@@ -71,7 +71,7 @@
 @section('breadcrumb')
 {{breadcrumb([
 	['Home', 'homePage'],
-	['Üretim', '#'],
+	['Üretim Yapılandırma', '#'],
 	['Rotasyonlar', 'routes'],
 	[$detail['title']]
 ])}}
@@ -89,7 +89,7 @@
 				 	<i class="icon-trash"></i> Sil </a>
 			</li>
 			<li>
-				<a href="{{route('editBom', $detail['id'])}}">
+				<a href="{{route('editRoute', $detail['id'])}}">
 					<i class="icon-bell"></i> Düzenle </a>
 			</li>
 			<li>

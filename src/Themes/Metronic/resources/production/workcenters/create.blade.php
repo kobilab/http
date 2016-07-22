@@ -28,7 +28,7 @@
 @section('breadcrumb')
 {{breadcrumb([
 	['Home', 'homePage'],
-	['Ürünler & Üretim', '#'],
+	['Üretim Yapılandırma', '#'],
 	['İş İstasyonları', 'workCenters'],
 	['Yeni']
 ])}}

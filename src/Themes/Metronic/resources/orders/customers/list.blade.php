@@ -38,7 +38,7 @@
 @section('breadcrumb')
 {{breadcrumb([
 	['Home', 'homePage'],
-	['Ürünler & Üretim', '#'],
+	['Müşteriler', '#'],
 	['Parçalar']
 ])}}
 @endsection

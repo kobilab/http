@@ -24,13 +24,13 @@
 @endsection
 
 @section('title')
-	Yeni İtem
+	Yeni Parça
 @endsection
 
 @section('breadcrumb')
 {{breadcrumb([
 	['Home', 'homePage'],
-	['Ürünler & Üretim', '#'],
+	['Üretim Yapılandırma', '#'],
 	['Parçalar', 'parts'],
 	['Yeni']
 ])}}

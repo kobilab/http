@@ -29,7 +29,7 @@
 @section('breadcrumb')
 {{breadcrumb([
 	['Home', 'homePage'],
-	['Ürünler & Üretim', '#'],
+	['Üretim Yapılandırma', '#'],
 	['Ürün Ağaçları', 'boms'],
 	[$detail->getBom['title'], 'showBom', $detail->getBom['id']],
 	['Gereken Parça Düzenle']

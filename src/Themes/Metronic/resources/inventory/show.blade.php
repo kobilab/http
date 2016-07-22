@@ -31,6 +31,7 @@
 {{breadcrumb([
 	['Home', 'homePage'],
 	['Depo', '#'],
+	['Lotlar', 'lots'],
 	[$detail['lot_code']]
 ])}}
 @endsection
@@ -43,9 +44,10 @@
 		</button>
 		<ul class="dropdown-menu pull-right" role="menu">
 			<li>
-				{{toolSil('deleteLot', $detail['id'], $detail['id'])}}
+				<a data-toggle="modal" href="#sil{{$detail['id']}}"><i class="icon-user"></i> Sil </a>
 			</li>
 		</ul>
+		{{modal('sil'.$detail['id'], 'deleteLot', $detail['id'])}}
 	</div>
 </div>
 @endsection

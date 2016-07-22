@@ -5,6 +5,7 @@
 	use Illuminate\Routing\Controller;
 
 	use KobiLab\Parts;
+	use KobiLab\Boms;
 
 	/**
 	 * Parçalarla alakalı işlemlerin yürütüldüğü sınıf
@@ -44,7 +45,7 @@
 		 */
 		public function create()
 		{
-			$this->data['boms'] = Parts::getBomsForNewOrEditNewPart();
+			$this->data['boms'] = Boms::all();
 
 			return view('zahmetsizce::production.parts.create', $this->data);
 		}

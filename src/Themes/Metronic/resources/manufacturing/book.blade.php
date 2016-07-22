@@ -14,7 +14,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					@foreach($detail->getUygunLotlar as $each)
+					@foreach($detail->getAvailableLots as $each)
 					<tr>
 						<td>{{$each['lot_code']}}</td>
 						<td align="right">{{numberFormat($each['quantity'])}}</td>

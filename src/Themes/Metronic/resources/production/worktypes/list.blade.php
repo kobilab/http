@@ -41,6 +41,9 @@
 											<i class="icon-flag"></i> Operasyon İstasyonu Tanımla
 										</a>
 									</li>
+									<li>
+										<a href="{{route('manufacturingOfJob', $rota['id'])}}">İşleri</a>
+									</li>
 								</ul>
 							</div>
 							{{modal('sil'.$rota['id'], 'deleteWorkType', $rota['id'])}}
@@ -60,7 +63,7 @@
 @section('breadcrumb')
 {{breadcrumb([
 	['Home', 'homePage'],
-	['Ürünler & Üretim', '#'],
+	['Üretim Yapılandırma', '#'],
 	['Operasyonlar']
 ])}}
 @endsection

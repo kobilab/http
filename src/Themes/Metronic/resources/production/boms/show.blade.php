@@ -25,8 +25,8 @@
 						<tbody>
 							@foreach($detail->getComposedParts as $e)
 								<tr>
-									<td>{{$e->getItem['title']}}</td>
-									<td>{{sil('deleteComposedPartFromBom', $e['id'])}} {{tableTool('Parçayı İncele', 'showPart', $e->getItem['id'])}}</td>
+									<td>{{$e->getPart['title']}}</td>
+									<td>{{sil('deleteComposedPartFromBom', $e['id'])}} {{linka('Parçayı İncele', 'showPart', $e->getPart['id'])}}</td>
 								</tr>
 							@endforeach
 						</tbody>
@@ -53,7 +53,7 @@
 								<tr>
 									<td>{{$e->getPart['title']}}</td>
 									<td>{{numberFormat($e['quantity'])}}</td>
-									<td>{{sil('deleteNeededPartFromBom', $e['id'])}} {{edit('editNeededPartForBom', $e['id'])}} {{tableTool('Parçayı İncele', 'showPart', $e->getPart['id'])}}</td>
+									<td>{{sil('deleteNeededPartFromBom', $e['id'])}} {{edit('editNeededPartForBom', $e['id'])}} {{linka('Parçayı İncele', 'showPart', $e->getPart['id'])}}</td>
 								</tr>
 							@endforeach
 						</tbody>
@@ -77,8 +77,8 @@
 						<tbody>
 							@foreach($detail->getConnectedParts as $e)
 								<tr>
-									<td>{{$e->getItem['title']}}</td>
-									<td>{{tableTool('Kaldır', 'removeConnectionPartBom', $e['id'])}} {{tableTool('Parçayı İncele', 'showPart', $e->getItem['id'])}}</td>
+									<td>{{$e->getPart['title']}}</td>
+									<td>{{linka('Kaldır', 'removeConnectionPartBom', $e['id'])}} {{linka('Parçayı İncele', 'showPart', $e->getPart['id'])}}</td>
 								</tr>
 							@endforeach
 						</tbody>
@@ -110,13 +110,13 @@
 										@endif
 									</td>
 									<td>
-										{{tableTool('Kaldır', 'removeConnectionBomRoute', $e['id'])}}
+										{{linka('Kaldır', 'removeConnectionBomRoute', $e['id'])}}
 										@if($e['default']==1)
-											{{tableTool('Öntanımlı yap', 'makeRouteDefaultForBom', $e['id'])}}
+											{{linka('Öntanımlı yap', 'makeRouteDefaultForBom', $e['id'])}}
 										@else
-											{{tableTool('Öntanımı Kaldır', 'removeDefaultRouteFromRoute', $e['id'])}}
+											{{linka('Öntanımı Kaldır', 'removeDefaultRouteFromRoute', $e['id'])}}
 										@endif
-										{{tableTool('Rotayı İncele', 'showRoute', $e->getRoute['id'])}}
+										{{linka('Rotayı İncele', 'showRoute', $e->getRoute['id'])}}
 									</td>
 								</tr>
 							@endforeach
@@ -137,7 +137,7 @@
 @section('breadcrumb')
 {{breadcrumb([
 	['Home', 'homePage'],
-	['Ürünler & Üretim', '#'],
+	['Üretim Yapılandırma', '#'],
 	['Ürün Ağaçları', 'boms'],
 	[$detail['title']]
 ])}}

@@ -1,9 +1,5 @@
 @extends('zahmetsizce::themes.main')
 
-@section('boxTools')
-	{{tool(trans('e.cancel'), 'showOrder', $detail['id'])}}
-@endsection
-
 @section('boxBodyClass') form @endsection
 
 @section('content')

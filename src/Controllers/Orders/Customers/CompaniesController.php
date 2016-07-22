@@ -23,7 +23,7 @@
 		public function __construct() {
 			$this->data['theme'] = [
 				'first'	=> 'crm',
-				'second'=> 'companies'
+				'second'=> 'company'
 			];
 		}
 

@@ -3,7 +3,8 @@
 @set('datatablesContent', true)
 
 @section('content')
-<h3 class="page-title"> Üretim Emirleri </h3>
+<a href="{{route('getOutputJobList', $detail['id'])}}">GET</a>
+<h3 class="page-title"> {{$detail['title']}} İşleri </h3>
 <div class="row">
 	<div class="col-md-12">
 		<table class="table table-striped table-bordered table-hover order-column" id="sample_1">

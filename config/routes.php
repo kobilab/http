@@ -20,13 +20,13 @@
 
 				Route::group([ 'prefix' => 'parts' ], function() {
 
-					Route::get('new/{orderId}', 'OrderDetailsController@addPartToOrder')->name('addPartToOrder');
-					Route::post('new/{orderId}', 'OrderDetailsController@storePartToOrder');
+					Route::get('new/{orderId}', 'OrderDetailsController@create')->name('addPartToOrder');
+					Route::post('new/{orderId}', 'OrderDetailsController@store');
 
-					Route::get('edit/{orderPartId}', 'OrderDetailsController@partEdit')->name('editPartOfOrder');
-					Route::post('edit/{orderPartId}', 'OrderDetailsController@partUpdate');
+					Route::get('edit/{orderPartId}', 'OrderDetailsController@edit')->name('editPartOfOrder');
+					Route::post('edit/{orderPartId}', 'OrderDetailsController@update');
 
-					Route::get('delete/{orderPartId}', 'OrderDetailsController@partDelete')->name('deletePartOfOrder');
+					Route::get('delete/{orderPartId}', 'OrderDetailsController@delete')->name('deletePartOfOrder');
 				});
 			});
 
@@ -215,24 +215,26 @@
 						Route::get('delete/{workTypeId}', 'WorkTypesController@delete')->name('deleteWorkType');
 
 
-						Route::group(
-							[
-								'prefix' => 'centers'
-							],
-							function() {
-								Route::get('/', 'WorkCentersController@index')->name('workCenters');
+					}
+				);
 
-								Route::get('new', 'WorkCentersController@create')->name('newWorkCenter');
-								Route::post('new', 'WorkCentersController@store');
+				Route::group(
+					[
+						'prefix' => 'operations/centers',
+						'namespace' => 'WorkCenters'
+					],
+					function() {
+						Route::get('/', 'WorkCentersController@index')->name('workCenters');
 
-								Route::get('edit/{workCenterId}', 'WorkCentersController@edit')->name('editWorkCenter');
-								Route::post('edit/{workCenterId}', 'WorkCentersController@update');
+						Route::get('new', 'WorkCentersController@create')->name('newWorkCenter');
+						Route::post('new', 'WorkCentersController@store');
 
-								Route::get('show/{workCenterId}', 'WorkCentersController@show')->name('showWorkCenter');
+						Route::get('edit/{workCenterId}', 'WorkCentersController@edit')->name('editWorkCenter');
+						Route::post('edit/{workCenterId}', 'WorkCentersController@update');
 
-								Route::get('delete/{workCenterId}', 'WorkCentersController@delete')->name('deleteWorkCenter');
-							}
-						);
+						Route::get('show/{workCenterId}', 'WorkCentersController@show')->name('showWorkCenter');
+
+						Route::get('delete/{workCenterId}', 'WorkCentersController@delete')->name('deleteWorkCenter');
 					}
 				);
 			}
@@ -284,6 +286,7 @@
 				Route::post('isinbikisminiyap/{rotationId}', 'ManufacturingController@isinbikisminiyap')->name('isinBiKisminiYap');
 
 				Route::get('joblist/{workTypeId}', 'ManufacturingController@jobList')->name('manufacturingOfJob');
+				Route::get('getOutputJobList/{workTypeId}', 'ManufacturingController@getOutputJobList')->name('getOutputJobList');
 
 				Route::get('machinelist/{workCenterId}', 'ManufacturingController@workCenterList')->name('manufacturingOfMachine');
 			}

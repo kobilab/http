@@ -7,3 +7,11 @@
 @section('title')
 	Müşteri İncele
 @endsection
+
+@section('breadcrumb')
+{{breadcrumb([
+	['Home', 'homePage'],
+	['Müşteriler', '#'],
+	['Yeni']
+])}}
+@endsection

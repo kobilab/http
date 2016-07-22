@@ -35,6 +35,9 @@
 										<a data-toggle="modal" href="#sil{{$rota['id']}}">
 											<i class="icon-user"></i> Sil </a>
 									</li>
+									<li>
+										<a href="{{route('manufacturingOfMachine', $rota['id'])}}">İşleri</a>
+									</li>
 								</ul>
 							</div>
 							{{modal('sil'.$rota['id'], 'deleteWorkCenter', $rota['id'])}}
@@ -54,7 +57,7 @@
 @section('breadcrumb')
 {{breadcrumb([
 	['Home', 'homePage'],
-	['Ürünler & Üretim', '#'],
+	['Üretim Yapılandırma', '#'],
 	['İş İstasyonları']
 ])}}
 @endsection

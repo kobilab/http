@@ -2,10 +2,6 @@
 
 @set('pluginDatatable', true)
 
-@section('boxTools')
-	{{tool(trans('e.new'), 'newOrder')}}
-@endsection
-
 @section('content')
 	<table class="table table-striped table-bordered table-hover order-column" id="sample_1">
 		<thead>
@@ -19,12 +15,12 @@
 			@foreach($orders as $siparis)
 			<tr>
 				<td>{{$siparis['order_code']}}</td>
-				<td>{{$siparis->getMusteri['name']}}</td>
+				<td>{{$siparis->getCompany['name']}}</td>
 				<td>
 					{{edit('editOrder', $siparis['id'])}}
 					{{show('showOrder', $siparis['id'])}}
 					{{sil('deleteOrder', $siparis['id'], $siparis['id'])}}
-					{{tableTool(trans('e.addPartToOrder'), 'addPartToOrder', $siparis['id'])}}
+					{{linka(trans('e.addPartToOrder'), 'addPartToOrder', $siparis['id'])}}
 				</td>
 			</tr>
 			@endforeach

@@ -42,7 +42,7 @@
 @section('breadcrumb')
 {{breadcrumb([
 	['Home', 'homePage'],
-	['Ürünler & Üretim', '#'],
+	['Üretim Yapılandırma', '#'],
 	['Operasyonlar', 'workTypes'],
 	[$detail['title'], 'showWorkType', $detail['id']],
 	['Düzenle']
@@ -61,7 +61,7 @@
 				 	<i class="icon-trash"></i> Sil </a>
 			</li>
 			<li>
-				<a href="{{route('editBom', $detail['id'])}}">
+				<a href="{{route('editWorkType', $detail['id'])}}">
 					<i class="icon-bell"></i> Düzenle </a>
 			</li>
 			<li>

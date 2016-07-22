@@ -21,11 +21,11 @@
 						<td>{{$rota['title']}}</td>
 						<td>
 						   <div class="btn-group">
-								<button class="btn btn-xs green dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false"> İşlemler
-									<i class="fa fa-angle-down"></i>
-								</button>
-								{{dropdownMenua([
-									[function() {edit('homePage');}]
+								{{buttonGroup('İşlemler', [
+									edit('editRoute', $rota['id']),
+									show('showRoute', $rota['id']),
+									'<a data-toggle="modal" href="#sil'.$rota['id'].'"><i class="icon-user"></i> Sil </a>',
+									'divider',
 								])}}
 							</div>
 							{{modal('sil'.$rota['id'], 'deleteRoute', $rota['id'])}}
@@ -45,7 +45,7 @@
 @section('breadcrumb')
 {{breadcrumb([
 	['Home', 'homePage'],
-	['Ürünler & Üretim', '#'],
+	['Üretim Yapılandırma', '#'],
 	['Rotasyonlar']
 ])}}
 @endsection

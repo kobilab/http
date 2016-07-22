@@ -9,9 +9,7 @@
 		<table class="table table-striped table-bordered table-hover order-column" id="sample_1">
 			<thead>
 				<tr>
-					<th> Parça Kodu </th>
-					<th> Parça Adı </th>
-					<th> İşlemler </th>
+					{{tableTitles(['Parça Kodu', 'Parça Adı', 'İşlemler'])}}
 				</tr>
 			</thead>
 			<tbody>
@@ -21,8 +19,8 @@
 						<td>{{$item['title']}}</td>
 						<td>
 							{{buttonGroup('İşlemler', [
-								linka('Düzenle', 'editPart', $item['id']),
-								linka('İncele', 'showPart', $item['id']),
+								edit('editPart', $item['id']),
+								show('showPart', $item['id']),
 								'<a data-toggle="modal" href="#sil'.$item['id'].'"><i class="icon-user"></i> Sil </a>',
 								'divider',
 								linka('Ürün Ağacı Tanımla', 'defineBomToPart', $item['id']),
@@ -45,7 +43,7 @@
 @section('breadcrumb')
 {{breadcrumb([
 	['Home', 'homePage'],
-	['Ürünler & Üretim', '#'],
+	['Üretim Yapılandırma', '#'],
 	['Parçalar']
 ])}}
 @endsection
@@ -89,7 +87,7 @@ var TableDatatablesManaged = function () {
 				[5, 15, 20, "All"] // change per page values here
 			],
 			// set the initial value
-			"pageLength": 5,			
+			"pageLength": 10,			
 			"pagingType": "bootstrap_full_number",
 			"order": [
 				[1, "asc"]
@@ -130,8 +128,7 @@ if (App.isAngularJsApp() === false) {
 		</button>
 		<ul class="dropdown-menu pull-right" role="menu">
 			<li>
-				<a href="{{route('newPart')}}">
-					<i class="icon-plus"></i> Yeni Parça </a>
+				<a href="{{route('newPart')}}"><i class="icon-plus"></i> Yeni Parça </a>
 			</li>
 		</ul>
 	</div>

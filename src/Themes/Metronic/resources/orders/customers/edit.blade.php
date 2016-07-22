@@ -1,6 +1,7 @@
 @extends('zahmetsizce::themes.main')
 
 @section('content')
+	<h3>Müşteri Düzenle</h3>
 	{{open(['editCompany', $detail['id']])}}
 		<div class="form-body">
 			{{text(trans('e.companyCode'), 'companyCode', $detail['company_code'])}}
@@ -19,9 +20,7 @@
 @section('breadcrumb')
 {{breadcrumb([
 	['Home', 'homePage'],
-	['Ürünler & Üretim', '#'],
-	['Parçalar', 'parts'],
-	[$detail['title'], 'showPart', $detail['id']],
+	['Müşteriler', '#'],
 	['Düzenle']
 ])}}
 @endsection

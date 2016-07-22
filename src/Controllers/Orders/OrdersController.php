@@ -23,7 +23,7 @@
 		public function __construct() {
 			$this->data['theme'] = [
 				'first'	=> 'crm',
-				'second'=> 'orders'
+				'second'=> 'order'
 			];
 		}
 
@@ -120,7 +120,7 @@
 		 */
 		public function delete($orderId)
 		{
-			Orders::delete($orderId);
+			Orders::find($orderId)->delete();
 
 			return redirectTo('orders');
 		}

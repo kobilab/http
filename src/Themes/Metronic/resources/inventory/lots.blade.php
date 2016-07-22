@@ -133,8 +133,7 @@ if (App.isAngularJsApp() === false) {
 		</button>
 		<ul class="dropdown-menu pull-right" role="menu">
 			<li>
-				<a href="{{route('newLot')}}">
-					<i class="icon-plus"></i> Yeni Lot </a>
+				<a href="{{route('newLot')}}"><i class="icon-plus"></i> Yeni Lot </a>
 			</li>
 		</ul>
 	</div>

@@ -14,7 +14,7 @@
 		<tr>
 			<th>Bağlı Bomlar</th>
 			<td>
-				@if($detail->getBomlar->count()>0)
+				@if($detail->getBoms->count()>0)
 					<table class="table table-bordered">
 						<thead>
 							<tr>
@@ -24,7 +24,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							@foreach($detail->getBomlar as $e)
+							@foreach($detail->getBoms as $e)
 								<tr>
 									<td>{{$e->getBom['title']}}</td>
 									<td>
@@ -33,11 +33,11 @@
 										@endif
 									</td>
 									<td>
-										{{tableTool('Kaldır', 'removeConnectionPartBom', $e['id'])}}
+										{{linka('Kaldır', 'removeConnectionPartBom', $e['id'])}}
 										@if($e['default']==1)
-											{{tableTool('Öntanımlı yap', 'makeBomDefaultForPart', $e['id'])}}
+											{{linka('Öntanımlı yap', 'makeBomDefaultForPart', $e['id'])}}
 										@else
-											{{tableTool('Öntanımı Kaldır', 'removeDefaultBomFromPart', $e['id'])}}
+											{{linka('Öntanımı Kaldır', 'removeDefaultBomFromPart', $e['id'])}}
 										@endif
 									</td>
 								</tr>
@@ -51,7 +51,7 @@
 		</tr>
 		<tr>
 			<th>Depodaki Toplam</th>
-			<td>{{numberFormat($detail->getToplam['sumOf'])}}</td>
+			<td>{{numberFormat($detail->getTotal['sumOf'])}}</td>
 		</tr>
 	</table>
 @endsection
@@ -63,7 +63,7 @@
 @section('breadcrumb')
 {{breadcrumb([
 	['Home', 'homePage'],
-	['Ürünler & Üretim', '#'],
+	['Üretim Yapılandırma', '#'],
 	['Parçalar', 'parts'],
 	[$detail['title']]
 ])}}
@@ -77,8 +77,7 @@
 		</button>
 		<ul class="dropdown-menu pull-right" role="menu">
 			<li>
-				 <a data-toggle="modal" href="#sil">
-				 	<i class="icon-trash"></i> Sil </a>
+				 <a data-toggle="modal" href="#sil"><i class="icon-trash"></i> Sil </a>
 			</li>
 			<li>
 				<a href="{{route('editPart', $detail['id'])}}">

@@ -24,7 +24,7 @@
 @section('breadcrumb')
 {{breadcrumb([
 	['Home', 'homePage'],
-	['Ürünler & Üretim', '#'],
+	['Üretim Yapılandırma', '#'],
 	['Parçalar', 'parts'],
 	[$detail['title'], 'showPart', $detail['id']],
 	['Düzenle']
