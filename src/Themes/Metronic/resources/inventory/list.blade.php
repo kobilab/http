@@ -7,25 +7,21 @@
 <div class="row">
 	<div class="col-md-12">
 		<table class="table table-striped table-bordered table-hover order-column" id="sample_1">
-			<thead>
-				<tr>
-					<th> Lot Kodu </th>
-					<th> Parça Adı </th>
-					<th> Kaç Adet </th>
-					<th> İşlemler </th>
-				</tr>
-			</thead>
+			{{tableTitles(['Lot Kodu', 'Parça Adı', 'Kaç Adet', 'İşlemler'])}}
 			<tbody>
 				@foreach($lots as $lot)
 					<tr>
 						<td>{{$lot['lot_code']}}</td>
 						<td>{{$lot->getPart['title']}}</td>
-						<td>{{numberFormat($lot['quantity'])}}</td>
+						<td>{{numberFormat($lot['quantity'])}} {{$lot->getPart->getUnit['short_form']}}</td>
 						<td>
-							{{show('showLot', $lot['id'])}}
-							{{sil('deleteLot', $lot['id'], $lot['id'])}}
+							{{buttonGroup('İşlemler', [
+								showLink('showLot', $lot['id']),
+								deleteLink('sil'.$lot['id'], null, true)
+							])}}
 						</td>
 					</tr>
+					{{modal('sil'.$lot['id'], 'deleteLot', $lot['id'])}}
 				@endforeach
 			</tbody>
 		</table>
@@ -80,11 +76,11 @@ var TableDatatablesManaged = function () {
 			}],
 
 			"lengthMenu": [
-				[5, 15, 20, -1],
-				[5, 15, 20, "All"] // change per page values here
+				[5, 15, 25, -1],
+				[5, 15, 25, "All"] // change per page values here
 			],
 			// set the initial value
-			"pageLength": 5,			
+			"pageLength": 15,			
 			"pagingType": "bootstrap_full_number",
 			"order": [
 				[1, "asc"]
@@ -125,7 +121,7 @@ if (App.isAngularJsApp() === false) {
 		</button>
 		<ul class="dropdown-menu pull-right" role="menu">
 			<li>
-				<a href="{{route('newLot')}}"><i class="icon-plus"></i> Yeni Lot </a>
+				{{newLink('Lot', 'newLot')}}
 			</li>
 		</ul>
 	</div>

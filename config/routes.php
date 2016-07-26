@@ -4,6 +4,8 @@
 
 		Route::get('/', 'PagesController@index')->name('homePage');
 
+		Route::post('goFast', 'PagesController@goFast')->name('goFast');
+
 		Route::group([ 'prefix' => 'customers', 'namespace' => 'Orders' ], function() {
 			Route::group([ 'prefix' => 'orders' ], function() {
 				Route::get('/', 'OrdersController@index')->name('orders');
@@ -27,6 +29,8 @@
 					Route::post('edit/{orderPartId}', 'OrderDetailsController@update');
 
 					Route::get('delete/{orderPartId}', 'OrderDetailsController@delete')->name('deletePartOfOrder');
+
+					Route::get('produceOrderDetail/{orderPartId}', 'OrderDetailsController@produceOrderDetail')->name('produceOrderDetail');
 				});
 			});
 
@@ -248,7 +252,7 @@
 			function() {
 				Route::get('/', 'StockController@index')->name('lots');
 
-				Route::get('new', 'StockController@create')->name('newLot');
+				Route::get('new/{partId?}', 'StockController@create')->name('newLot');
 				Route::post('new', 'StockController@store');
 
 				Route::get('show/{lotId}', 'StockController@show')->name('showLot');
@@ -272,6 +276,9 @@
 				Route::get('new', 'ManufacturingController@create')->name('newProductionOrder');
 				Route::post('new', 'ManufacturingController@store');
 
+				Route::get('edit/{productionOrderId}', 'ManufacturingController@edit')->name('editProductionOrder');
+				Route::post('edit/{productionOrderId}', 'ManufacturingController@update');
+
 				Route::get('show/{productionOrderId}', 'ManufacturingController@show')->name('showProductionOrder');
 
 				Route::get('delete/{productionOrderId}', 'ManufacturingController@delete')->name('deleteProductionOrder');
@@ -287,8 +294,11 @@
 
 				Route::get('joblist/{workTypeId}', 'ManufacturingController@jobList')->name('manufacturingOfJob');
 				Route::get('getOutputJobList/{workTypeId}', 'ManufacturingController@getOutputJobList')->name('getOutputJobList');
+				Route::get('operationsOfManufacturing', 'ManufacturingController@operationsOfManufacturing')->name('operationsOfManufacturing');
 
 				Route::get('machinelist/{workCenterId}', 'ManufacturingController@workCenterList')->name('manufacturingOfMachine');
+				Route::get('getOutputMachineList/{workCenterId}', 'ManufacturingController@getOutputMachineList')->name('getOutputMachineList');
+				Route::get('centersOfManufacturing', 'ManufacturingController@centersOfManufacturing')->name('centersOfManufacturing');
 			}
 		);
 
@@ -306,4 +316,8 @@
 			Route::post('login', 'AuthController@doLogin');
 		});
 
+	});
+
+	Route::get('asd', function() {
+		KobiLab\ProductionControl::fire(34);
 	});

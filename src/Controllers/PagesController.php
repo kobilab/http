@@ -3,6 +3,7 @@
 	namespace KobiLab\Http\Controllers;
 
 	use Illuminate\Routing\Controller;
+	use Illuminate\Support\Facades\Input;
 
 	use KobiLab\ProductionOrders;
 	use KobiLab\Parts;
@@ -18,6 +19,15 @@
 			];
 
 			return view('zahmetsizce::welcome', $this->data);
+		}
+
+		public function goFast()
+		{
+			$key = Input::get('key');
+
+			if(starts_with($key, 'E')) {
+				return redirectTo('showProductionOrder', substr($key, 1));
+			}
 		}
 
 	}

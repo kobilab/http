@@ -22,7 +22,7 @@
         {{css('assets/global/plugins/select2/css/select2-bootstrap.min.css')}}
         <!-- END PAGE LEVEL PLUGINS -->
         <!-- BEGIN THEME GLOBAL STYLES -->
-        {{css('assets/global/css/components.min.css')}}t/css" />
+        {{css('assets/global/css/components.min.css')}}
         {{css('assets/global/css/plugins.min.css')}}
         <!-- END THEME GLOBAL STYLES -->
         <!-- BEGIN PAGE LEVEL STYLES -->
@@ -30,7 +30,8 @@
         <!-- END PAGE LEVEL STYLES -->
         <!-- BEGIN THEME LAYOUT STYLES -->
         <!-- END THEME LAYOUT STYLES -->
-        <link rel="shortcut icon" href="{{asset('favicon.ico')}}" /> </head>
+        <link rel="shortcut icon" href="{{asset('favicon.ico')}}" />
+    </head>
     <!-- END HEAD -->
 
     <body class=" login">

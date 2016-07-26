@@ -95,12 +95,12 @@
 
 	function tableTitles($array)
 	{
-		$string = '';
+		$string = '<thead><tr>';
 		foreach($array as $e) {
 			$string .= '<th>'.$e.'</th>';
 		}
 
-		return $string;
+		return $string.'</tr></thead>';
 	}
 
 	function buttonGroup($title, $dropdownMenu) {
@@ -123,7 +123,7 @@
 			if($e=='divider') {
 				$string .= '<li class="divider"></li>';
 			} else {
-				$string .= '<li>'. $e . '</li>';
+				$string .= '<li>'. value($e) . '</li>';
 			}
 		}
 		$string .= '</ul>';
@@ -131,62 +131,56 @@
 		return $string;
 	}
 
-
-	if (!function_exists('edit')) {
-		/**
-		 * Tablolar içersinde düzenleme butonunu derleyen fonksiyon
-		 * 
-		 * @param  string       $route  Yönlendirme adı
-		 * @param  string|array $detail Yönlendirme detayları
-		 * @return string       		Düzenleme butonu
-		 */
-		function edit($route, $detail=null)
+	if (!function_exists('newLink')) {
+		function newLink($text, $route, $routeDetail=null, $modal = null)
 		{
-			return '<a class="" href="'.route($route, $detail).'"><i class="fa fa-edit"></i> Düzenle</a>';
+			return createLink('Yeni '.$text, $route, $routeDetail, 'plus', $modal);
 		}		
 	}
 
-	if (!function_exists('show')) {
-		/**
-		 * Tablolar içerisinde inceleme butonunu derleyen fonksiyon
-		 * 
-		 * @param  string 		$route  Yönlendirme adı
-		 * @param  string|array $detail Yönlendirme detayları
-		 * @return string         		İncelem butonu
-		 */
-		function show($route, $detail=null)
+	if (!function_exists('editLink')) {
+		function editLink($route, $routeDetail=null, $modal = null)
 		{
-			return '<a class="" href="'.route($route, $detail).'"><i class="fa fa-search"></i> İncele</a>';
+			return createLink('Düzenle', $route, $routeDetail, 'edit', $modal);
+		}		
+	}
+
+	if (!function_exists('showLink')) {
+		function showLink($route, $routeDetail=null, $modal = null)
+		{
+			return createLink('İncele', $route, $routeDetail, 'info', $modal);
 		}
 	}
 
-	if (!function_exists('sil')) {
-		/**
-		 * Tablolar için silme butonunu derleyen fonksiyon
-		 * 
-		 * @param  string 			$route  Yönlendirme adı
-		 * @param  string|array  	$detail Yönlendirme detayları
-		 * @param  integer|string 	$id     Eğer modal oluşturulacaksa hangi değerle oluşturulacak
-		 * @return string         			Silme butonu ve varsa modal
-		 */
-		function sil($route, $detail=null, $id=null)
-		{
-			$cikti = '<a class="" ';
+	if(!function_exists('deleteLink')) {
+		function deleteLink($route, $routeDetail = null, $modal = null) {
+			return createLink('Sil', $route, $routeDetail, 'remove', $modal);
+		}
+	}
 
-			if ($id != null) {
-				$cikti .= 'data-toggle="modal" href="#sil'.$id.'"><i class="fa fa-trash-o"></i> Sil</a>';
-				$cikti .= "\n" . modal('sil'.$id, $route, $detail);
+	if(!function_exists('createLink')) {
+		function createLink($text, $route, $routeDetail=null, $icon=null, $modal=null, $class = [])
+		{
+			$k = '';
+			if(count($class)>0) {
+				foreach($class as $key => $value) {
+					$k .= ' '. $key .'="'.$value. '" ';
+				}
+			}
+			if($modal==true) {
+				$r = 'data-toggle="modal" href="#'.$route.'"';
 			} else {
-				$cikti .= 'href="'.route($route, $detail).'"><i class="fa fa-trash-o"></i> Sil</a>';
+				$r = 'href="'.route($route, $routeDetail).'"';
 			}
 
-			return $cikti;
-		}
-	}
+			if($icon===null) {
+				$i = '';
+			} else {
+				$i = '<i class="fa fa-'.$icon.'"></i>';
+			}
 
-	function linka($text, $route, $routeDetail=null)
-	{
-		return '<a href="'.route($route, $routeDetail).'"><i class="icon-docs"></i> '.$text.' </a>';
+			return '<a '.$k.' '.$r.'"> '.$i.' '.$text.' </a>';
+		}
 	}
 
 	if (!function_exists('breadcrumb')) {
@@ -274,6 +268,20 @@
 		function submit($text, $value=null, $name = null)
 		{
 			return Form::submit($text, ['class' => 'btn green', 'value' => $value, 'name' => $name]);
+		}
+	}
+
+	if(!function_exists('addButton')) {
+		function addButton()
+		{
+			return submit('Ekle');
+		}
+	}
+
+	if(!function_exists('editButton')) {
+		function editButton()
+		{
+			return submit('Düzenle');
 		}
 	}
 

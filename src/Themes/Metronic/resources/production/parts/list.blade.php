@@ -7,11 +7,7 @@
 <div class="row">
 	<div class="col-md-12">
 		<table class="table table-striped table-bordered table-hover order-column" id="sample_1">
-			<thead>
-				<tr>
-					{{tableTitles(['Parça Kodu', 'Parça Adı', 'İşlemler'])}}
-				</tr>
-			</thead>
+			{{tableTitles(['Parça Kodu', 'Parça Adı', 'İşlemler'])}}
 			<tbody>
 				@foreach($parts as $item)
 					<tr>
@@ -19,12 +15,12 @@
 						<td>{{$item['title']}}</td>
 						<td>
 							{{buttonGroup('İşlemler', [
-								edit('editPart', $item['id']),
-								show('showPart', $item['id']),
-								'<a data-toggle="modal" href="#sil'.$item['id'].'"><i class="icon-user"></i> Sil </a>',
+								editLink('editPart', $item['id']),
+								showLink('showPart', $item['id']),
+								deleteLink('sil'.$item['id'], null, true),
 								'divider',
-								linka('Ürün Ağacı Tanımla', 'defineBomToPart', $item['id']),
-								linka('Lotları Listele', 'lotsOfPart', $item['id'])
+								createLink('Ürün Ağacı Tanımla', 'defineBomToPart', $item['id'], 'link'),
+								createLink('Lotları Listele', 'lotsOfPart', $item['id'], 'list')
 							])}}
 						</td>
 					</tr>
@@ -83,11 +79,11 @@ var TableDatatablesManaged = function () {
 			}],
 
 			"lengthMenu": [
-				[5, 15, 20, -1],
-				[5, 15, 20, "All"] // change per page values here
+				[5, 15, 25, -1],
+				[5, 15, 25, "All"] // change per page values here
 			],
 			// set the initial value
-			"pageLength": 10,			
+			"pageLength": 15,			
 			"pagingType": "bootstrap_full_number",
 			"order": [
 				[1, "asc"]
@@ -128,7 +124,7 @@ if (App.isAngularJsApp() === false) {
 		</button>
 		<ul class="dropdown-menu pull-right" role="menu">
 			<li>
-				<a href="{{route('newPart')}}"><i class="icon-plus"></i> Yeni Parça </a>
+				{{newLink('Parça', 'newPart')}}
 			</li>
 		</ul>
 	</div>

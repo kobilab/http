@@ -7,48 +7,21 @@
 <div class="row">
 	<div class="col-md-12">
 		<table class="table table-striped table-bordered table-hover order-column" id="sample_1">
-			<thead>
-				<tr>
-					<th> Operasyon Adı </th>
-					<th> İşlemler </th>
-				</tr>
-			</thead>
+			{{tableTitles(['Operasyon Adı', 'İşlemler'])}}
 			<tbody>
 				@foreach($routes as $rota)
 					<tr>
 						<td>{{$rota['title']}}</td>
-						<td>
-						   <div class="btn-group">
-								<button class="btn btn-xs green dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false"> İşlemler
-									<i class="fa fa-angle-down"></i>
-								</button>
-								<ul class="dropdown-menu" role="menu">
-									<li>
-										<a href="{{route('editWorkType', $rota['id'])}}">
-											<i class="icon-docs"></i> Düzenle </a>
-									</li>
-									<li>
-										<a href="{{route('showWorkType', $rota['id'])}}">
-											<i class="icon-tag"></i> İncele </a>
-									</li>
-									<li>
-										<a data-toggle="modal" href="#sil{{$rota['id']}}">
-											<i class="icon-user"></i> Sil </a>
-									</li>
-									<li class="divider"> </li>
-									<li>
-										<a href="{{route('defineWorkCenterToWorkType', $rota['id'])}}">
-											<i class="icon-flag"></i> Operasyon İstasyonu Tanımla
-										</a>
-									</li>
-									<li>
-										<a href="{{route('manufacturingOfJob', $rota['id'])}}">İşleri</a>
-									</li>
-								</ul>
-							</div>
-							{{modal('sil'.$rota['id'], 'deleteWorkType', $rota['id'])}}
-						</td>
+						<td>{{buttonGroup('İşlemler', [
+							editLink('editWorkType', $rota['id']),
+							showLink('showWorkType', $rota['id']),
+							deleteLink('sil'.$rota['id'], null, true),
+							'divider',
+							createLink('Operasyon İstasyonu Tanımla', 'defineWorkCenterToWorkType', $rota['id'], 'link'),
+							createLink('İşleri', 'manufacturingOfJob', $rota['id'], 'star')
+						])}}</td>
 					</tr>
+					{{modal('sil'.$rota['id'], 'deleteWorkType', $rota['id'])}}
 				@endforeach
 			</tbody>
 		</table>
@@ -103,11 +76,11 @@ var TableDatatablesManaged = function () {
 			}],
 
 			"lengthMenu": [
-				[5, 15, 20, -1],
-				[5, 15, 20, "All"] // change per page values here
+				[5, 15, 25, -1],
+				[5, 15, 25, "All"] // change per page values here
 			],
 			// set the initial value
-			"pageLength": 5,			
+			"pageLength": 15,			
 			"pagingType": "bootstrap_full_number",
 			"order": [
 				[1, "asc"]
@@ -148,8 +121,7 @@ if (App.isAngularJsApp() === false) {
 		</button>
 		<ul class="dropdown-menu pull-right" role="menu">
 			<li>
-				<a href="{{route('newWorkType')}}">
-					<i class="icon-plus"></i> Yeni Operasyon </a>
+				{{newLink('Operasyon', 'newWorkType')}}
 			</li>
 		</ul>
 	</div>

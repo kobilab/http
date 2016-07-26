@@ -16,12 +16,7 @@
 			<td>
 				@if($detail->getRouteDetails->count()>0)
 					<table class="table table-bordered">
-						<thead>
-							<tr>
-								<th>İşlem Adı</th>
-								<th>İşlemler</th>
-							</tr>
-						</thead>
+						{{tableTitles(['İşlem Adı', 'İşlemler'])}}
 						<tbody>
 							@foreach($detail->getRouteDetails as $e)
 								<tr>
@@ -41,17 +36,12 @@
 			<td>
 				@if($detail->getDefinedBoms->count()>0)
 					<table class="table table-bordered">
-						<thead>
-							<tr>
-								<th>BOM</th>
-								<th>İşlemler</th>
-							</tr>
-						</thead>
+						{{tableTitles(['BOM', 'İşlemler'])}}
 						<tbody>
 							@foreach($detail->getDefinedBoms as $e)
 								<tr>
 									<td>{{$e->getBom['title']}}</td>
-									<td>{{linka('Kaldır', 'removeConnectionBomRoute', $e['id'])}}</td>
+									<td>{{createLink('Kaldır', 'removeConnectionBomRoute', $e['id'], 'unlink')}}</td>
 								</tr>
 							@endforeach
 						</tbody>
@@ -85,20 +75,16 @@
 		</button>
 		<ul class="dropdown-menu pull-right" role="menu">
 			<li>
-				 <a data-toggle="modal" href="#sil">
-				 	<i class="icon-trash"></i> Sil </a>
+				{{deleteLink('sil', null, true)}}
 			</li>
 			<li>
-				<a href="{{route('editRoute', $detail['id'])}}">
-					<i class="icon-bell"></i> Düzenle </a>
+				{{editLink('editRoute', $detail['id'])}}
 			</li>
 			<li>
-				<a href="{{route('defineWorkTypeToRoute', $detail['id'])}}">
-					<i class="icon-star"></i> Operasyon Tanımla </a>
+				{{createLink('Operasyon Tanımla', 'defineWorkTypeToRoute', $detail['id'], 'link')}}
 		   	</li>
 			<li>
-				<a href="{{route('defineBomToRoute', $detail['id'])}}">
-					<i class="icon-star"></i> Ürün Ağacına Bağla </a>
+				{{createLink('Ürün Ağacına Tanımla', 'defineBomToRoute', $detail['id'], 'link')}}
 		   	</li>
 		</ul>
 	</div>

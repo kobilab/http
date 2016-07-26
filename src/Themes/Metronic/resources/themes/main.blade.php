@@ -17,7 +17,7 @@
 		@yield('ekcss')
 	</head>
 	<!-- END HEAD -->
-	<body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
+	<body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white page-sidebar-closed">
 		<!-- BEGIN HEADER -->
 		<div class="page-header navbar navbar-fixed-top">
 			<!-- BEGIN HEADER INNER -->
@@ -52,6 +52,8 @@
 					<!-- BEGIN PAGE BAR -->
 					@include('zahmetsizce::themes.pagebar')
 					<!-- END PAGE BAR -->
+					<br/>
+					@include('zahmetsizce::themes.alert')
 					@yield('content')
 				</div>
 				<!-- END CONTENT BODY -->
@@ -60,7 +62,7 @@
 		</div>
 		<!-- END CONTAINER -->
 		<!-- BEGIN FOOTER -->
-		@include('zahmetsizce::themes.footer')
+		{{@@include('zahmetsizce::themes.footer')}}
 		<!-- END FOOTER -->
 		@include('zahmetsizce::themes.fixedjs')
 		@yield('ekjs')

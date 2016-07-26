@@ -4,8 +4,10 @@
 
 	use Illuminate\Routing\Controller;
 
+	use KobiLab\OrderDetails;
 	use KobiLab\Parts;
 	use KobiLab\Orders;
+	use KobiLab\ProductionOrders;
 
 	/**
 	 * Siparişlerle alakalı işlemleri yapan sınıf
@@ -49,12 +51,14 @@
 		 */
 		public function store($orderId)
 		{
-			$result = OrderDetails::setFromAllInput()->setRulesForTable('order_details');
+			$result = OrderDetails::setFromAllInput()->setIt('order_id', $orderId)->setIt('status', 1)->setRulesForTable('order_details');
 
 			if (!$result->autoCreate()) {
-				return redirectTo('createOrderDetail', $orderId);
+				return redirectTo('addPartToOrder', $orderId)
+						->withErrors($result->getErrors())
+						->withInput($result->getOld());
 			} else {
-				return redirectTo('orders');
+				return redirectTo('showOrder', $orderId);
 			}
 
 			/*$veriler = [
@@ -90,10 +94,12 @@
 		 */
 		public function update($orderDetailId)
 		{
-			$result = OrderDetails::setFromAllInput()->setId($partId)->setRulesForTable('order_detail_edit');
+			$result = OrderDetails::setFromAllInput()->setId($orderDetailId)->setRulesForTable('order_detail_edit');
 
 			if (!$result->autoUpdate()) {
-				return redirectTo('editOrderDetail', $partId);
+				return redirectTo('editOrderDetail', $orderDetailId)
+						->withErrors($result->getErrors())
+						->withInput($result->getOld());
 			} else {
 				return redirectTo('orders');
 			}
@@ -112,6 +118,24 @@
 			OrderDetails::find($orderDetailId)->delete();
 
 			return redirectTo('orders');
+		}
+
+		public function produceOrderDetail($orderDetailId)
+		{
+			$key = str_random(8);
+
+			ProductionOrders::setData([
+				'production_order_code' => 'E-O-'.$key,
+				'part_id' => OrderDetails::find($orderDetailId)['part_id'],
+				'quantity' => OrderDetails::find($orderDetailId)['quantity'],
+				'customer_order_detail_id' => $orderDetailId
+			])->setRulesForTable('production_order')->autoCreate();
+
+			OrderDetails::find($orderDetailId)->update([
+				'production_order_id' => ProductionOrders::where('production_order_code', 'E-O-'.$key)->first()['id']
+			]);
+
+			return redirectTo('productionOrders');
 		}
 
 	}

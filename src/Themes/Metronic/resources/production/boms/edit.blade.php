@@ -11,7 +11,7 @@
 			<div class="form-actions">
 				<div class="row">
 					<div class="col-md-offset-2 col-md-9">
-						{{submit('Düzenle')}}
+						{{editButton()}}
 					</div>
 				</div>
 			</div>

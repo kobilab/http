@@ -7,42 +7,19 @@
 <div class="row">
 	<div class="col-md-12">
 		<table class="table table-striped table-bordered table-hover order-column" id="sample_1">
-			<thead>
-				<tr>
-					<th> İş İstasyonu Adı </th>
-					<th> İşlemler </th>
-				</tr>
-			</thead>
+			{{tableTitles(['İş İstasyonu Adı', 'İşlemler'])}}
 			<tbody>
 				@foreach($routes as $rota)
 					<tr>
 						<td>{{$rota['title']}}</td>
-						<td>
-						   <div class="btn-group">
-								<button class="btn btn-xs green dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false"> İşlemler
-									<i class="fa fa-angle-down"></i>
-								</button>
-								<ul class="dropdown-menu" role="menu">
-									<li>
-										<a href="{{route('editWorkCenter', $rota['id'])}}">
-											<i class="icon-docs"></i> Düzenle </a>
-									</li>
-									<li>
-										<a href="{{route('showWorkCenter', $rota['id'])}}">
-											<i class="icon-tag"></i> İncele </a>
-									</li>
-									<li>
-										<a data-toggle="modal" href="#sil{{$rota['id']}}">
-											<i class="icon-user"></i> Sil </a>
-									</li>
-									<li>
-										<a href="{{route('manufacturingOfMachine', $rota['id'])}}">İşleri</a>
-									</li>
-								</ul>
-							</div>
-							{{modal('sil'.$rota['id'], 'deleteWorkCenter', $rota['id'])}}
-						</td>
+						<td>{{buttonGroup('İşlemler', [
+							editLink('editWorkCenter', $rota['id']),
+							showLink('showWorkCenter', $rota['id']),
+							deleteLink('sil'.$rota['id'], null, true),
+							createLink('İşleri', 'manufacturingOfMachine', $rota['id'], 'star')
+						])}}</td>
 					</tr>
+					{{modal('sil'.$rota['id'], 'deleteWorkCenter', $rota['id'])}}
 				@endforeach
 			</tbody>
 		</table>
@@ -97,11 +74,11 @@ var TableDatatablesManaged = function () {
 			}],
 
 			"lengthMenu": [
-				[5, 15, 20, -1],
-				[5, 15, 20, "All"] // change per page values here
+				[5, 15, 25, -1],
+				[5, 15, 25, "All"] // change per page values here
 			],
 			// set the initial value
-			"pageLength": 5,			
+			"pageLength": 15,			
 			"pagingType": "bootstrap_full_number",
 			"order": [
 				[1, "asc"]
@@ -142,8 +119,7 @@ if (App.isAngularJsApp() === false) {
 		</button>
 		<ul class="dropdown-menu pull-right" role="menu">
 			<li>
-				<a href="{{route('newWorkCenter')}}">
-					<i class="icon-plus"></i> Yeni İş İstasyonu </a>
+				{{newLink('İş İstasyonu', 'newWorkCenter')}}
 			</li>
 		</ul>
 	</div>

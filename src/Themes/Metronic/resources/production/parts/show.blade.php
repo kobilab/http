@@ -16,13 +16,7 @@
 			<td>
 				@if($detail->getBoms->count()>0)
 					<table class="table table-bordered">
-						<thead>
-							<tr>
-								<th>BOM</th>
-								<th>Açıklama</th>
-								<th>İşlemler</th>
-							</tr>
-						</thead>
+						{{tableTitles(['BOM', 'Açıklama', 'İşlemler'])}}
 						<tbody>
 							@foreach($detail->getBoms as $e)
 								<tr>
@@ -32,14 +26,13 @@
 											Ön tanımlı
 										@endif
 									</td>
-									<td>
-										{{linka('Kaldır', 'removeConnectionPartBom', $e['id'])}}
-										@if($e['default']==1)
-											{{linka('Öntanımlı yap', 'makeBomDefaultForPart', $e['id'])}}
-										@else
-											{{linka('Öntanımı Kaldır', 'removeDefaultBomFromPart', $e['id'])}}
-										@endif
-									</td>
+									<td>{{buttonGroup('İşlemler', [
+										createLink('Kaldır', 'removeConnectionPartBom', $e['id'], 'trash'),
+										function() use ($e) {
+											if($e['default']==1) return createLink('Öntanımlı yap', 'makeBomDefaultForPart', $e['id'], 'link');
+											else return createLink('Öntanımı kaldır', 'removeDefaultBomFromPart', $e['id'], 'unlink');
+										}
+									])}}</td>
 								</tr>
 							@endforeach
 						</tbody>
@@ -77,20 +70,16 @@
 		</button>
 		<ul class="dropdown-menu pull-right" role="menu">
 			<li>
-				 <a data-toggle="modal" href="#sil"><i class="icon-trash"></i> Sil </a>
+				{{deleteLink('sil', null, true)}}
 			</li>
 			<li>
-				<a href="{{route('editPart', $detail['id'])}}">
-					<i class="icon-bell"></i> Düzenle </a>
+				{{editLink('editPart', $detail['id'])}}
 			</li>
 			<li>
-				<a href="{{route('defineBomToPart', $detail['id'])}}">
-					<i class="icon-star"></i> Ürün Ağacı Tanımla </a>
+				{{createLink('Ürün Ağacı Tanımla', 'defineBomToPart', $detail['id'], 'link')}}
 		   	</li>
 			<li>
-				<a href="{{route('lotsOfPart', $detail['id'])}}">
-					<i class="icon-star"></i> Lotları Listele
-				</a>
+				{{createLink('Lotları Listele', 'lotsOfPart', $detail['id'], 'star')}}
 			</li>
 		</ul>
 	</div>

@@ -13,7 +13,7 @@
 			<div class="form-actions">
 				<div class="row">
 					<div class="col-md-offset-2 col-md-9">
-						{{submit('Ekle')}}
+						{{addButton()}}
 					</div>
 				</div>
 			</div>

@@ -3,20 +3,11 @@
 @set('datatablesContent', true)
 
 @section('content')
-<a href="{{route('getOutputJobList', $detail['id'])}}">GET</a>
 <h3 class="page-title"> {{$detail['title']}} İşleri </h3>
 <div class="row">
 	<div class="col-md-12">
 		<table class="table table-striped table-bordered table-hover order-column" id="sample_1">
-			<thead>
-				<tr>
-					<th>Emir Kodu</th>
-					<th>Parça Kodu</th>
-					<th>Parça</th>
-					<th>Adet</th>
-					<th>İşlemler</th>
-				</tr>
-			</thead>
+			{{tableTitles(['Emir Kodu', 'Parça Kodu', 'Parça', 'Adet', 'İşlemler'])}}
 			<tbody>
 				@foreach($list as $emir)
 					<tr>
@@ -24,25 +15,10 @@
 						<td>{{$emir->getPart['part_code']}}</td>
 						<td>{{$emir->getPart['title']}}</td>
 						<td>{{numberFormat($emir['quantity'])}}</td>
-						<td>
-						   <div class="btn-group">
-								<button class="btn btn-xs green dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false"> İşlemler
-									<i class="fa fa-angle-down"></i>
-								</button>
-									<ul class="dropdown-menu" role="menu">
-									<li>
-										<a href="{{route('showProductionOrder', $emir['id'])}}">
-											<i class="icon-tag"></i> İncele </a>
-									</li>
-									<li>
-										<a data-toggle="modal" href="#sil{{$emir['id']}}">
-											<i class="icon-user"></i> Sil </a>
-									</li>
-								</ul>
-							</div>
-						</td>
+						<td>{{buttonGroup('İşlemler', [
+							showLink('showProductionOrder', $emir['production_order_id'])
+						])}}</td>
 					</tr>
-					{{modal('sil'.$emir['id'], 'deleteProductionOrder', $emir['id'])}}
 				@endforeach
 			</tbody>
 		</table>
@@ -57,7 +33,8 @@
 @section('breadcrumb')
 {{breadcrumb([
 	['Home', 'homePage'],
-	['Üretim Emirleri']
+	['Üretim Emirleri', 'productionOrders'],
+	['Operasyonlar', 'operationsOfManufacturing']
 ])}}
 @endsection
 
@@ -91,11 +68,11 @@ var TableDatatablesManaged = function () {
 			}],
 
 			"lengthMenu": [
-				[5, 15, 20, -1],
-				[5, 15, 20, "All"] // change per page values here
+				[5, 15, 25, -1],
+				[5, 15, 25, "All"] // change per page values here
 			],
 			// set the initial value
-			"pageLength": 5,			
+			"pageLength": 15,			
 			"pagingType": "bootstrap_full_number",
 			"order": [
 				[1, "asc"]
@@ -136,8 +113,10 @@ if (App.isAngularJsApp() === false) {
 		</button>
 		<ul class="dropdown-menu pull-right" role="menu">
 			<li>
-				<a href="{{route('newProductionOrder')}}">
-					<i class="icon-plus"></i> Yeni Üretim Emri </a>
+				{{newLink('Üretim Emri', 'newProductionOrder')}}
+			</li>
+			<li>
+				{{createLink('Excel', 'getOutputJobList', $detail['id'], 'file-excel-o')}}
 			</li>
 		</ul>
 	</div>

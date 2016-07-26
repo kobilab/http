@@ -7,14 +7,7 @@
 <div class="row">
 	<div class="col-md-12">
 		<table class="table table-striped table-bordered table-hover order-column" id="sample_1">
-			<thead>
-				<tr>
-					<th> Parça Kodu </th>
-					<th> Parça Adı </th>
-					<th> Toplam Adet </th>
-					<th> İşlemler </th>
-				</tr>
-			</thead>
+			{{tableTitles(['Parça Kodu', 'Parça Adı', 'Toplam Adet', 'İşlemler'])}}
 			<tbody>
 				@foreach($parts as $item)
 					<tr>
@@ -22,7 +15,7 @@
 						<td>{{$item->getPart['title']}}</td>
 						<td>{{numberFormat($item['sumOf'], 2, ',', '.')}}</td>
 						<td>
-							<a class="btn btn-xs green" href="{{route('lotsOfPart', $item['part_id'])}}">Lotları İncele</a>
+							{{createLink('Lotları İncele', 'lotsOfPart', $item['part_id'], null, null, ['class'=>'btn btn-xs green'])}}
 						</td>
 					</tr>
 				@endforeach
@@ -79,11 +72,11 @@ var TableDatatablesManaged = function () {
 			}],
 
 			"lengthMenu": [
-				[5, 15, 20, -1],
-				[5, 15, 20, "All"] // change per page values here
+				[5, 15, 25, -1],
+				[5, 15, 25, "All"] // change per page values here
 			],
 			// set the initial value
-			"pageLength": 5,			
+			"pageLength": 15,
 			"pagingType": "bootstrap_full_number",
 			"order": [
 				[1, "asc"]
@@ -124,7 +117,7 @@ if (App.isAngularJsApp() === false) {
 		</button>
 		<ul class="dropdown-menu pull-right" role="menu">
 			<li>
-				<a href="{{route('newLot')}}"><i class="icon-plus"></i> Yeni Lot </a>
+				<a href="{{route('newLot')}}"> <i class="fa fa-plus"></i> Yeni Lot </a>
 			</li>
 		</ul>
 	</div>

@@ -41,7 +41,9 @@
 			$result = PartBom::setFromAllInput()->setRulesForTable('part_bom')->autoCreate();
 
 			if (!$result) {
-				return redirectTo('showPart', $partId);
+				return redirectTo('showPart', $partId)
+						->withErrors($result->getErrors())
+						->withInput($result->getOld());
 			} else {
 				return redirectTo('parts');
 			}
@@ -72,7 +74,9 @@
 			$result = BomRoute::setFromAllInput()->setRulesForTable('bom_route')->autoCreate();
 
 			if (!$result) {
-				return redirectTo('defineRouteToBom', $bomId);
+				return redirectTo('defineRouteToBom', $bomId)
+						->withErrors($result->getErrors())
+						->withInput($result->getOld());
 			} else {
 				return redirectTo('showBom', $bomId);
 			}
@@ -103,7 +107,9 @@
 			$result = PartBom::setFromAllInput()->setRulesForTable('part_bom')->autoCreate();
 
 			if (!$result) {
-				return redirectTo('definePartToBom', $bomId);
+				return redirectTo('definePartToBom', $bomId)
+						->withErrors($result->getErrors())
+						->withInput($result->getOld());
 			} else {
 				return redirectTo('showBom', $bomId);
 			}
@@ -134,7 +140,9 @@
 			$result = BomRoute::setFromAllInput()->setRulesForTable('bom_route')->autoCreate();
 
 			if (!$result) {
-				return redirectTo('defineBomToRoute', $routeId);
+				return redirectTo('defineBomToRoute', $routeId)
+						->withErrors($result->getErrors())
+						->withInput($result->getOld());
 			} else {
 				return redirectTo('showRoute', $routeId);
 			}

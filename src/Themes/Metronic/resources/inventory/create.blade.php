@@ -7,13 +7,13 @@
 		{{open('newLot')}}
 			<div class="form-body">
 				{{text('Lot Kodu', 'lot_code')}}
-				{{select('Parça', 'part_id', listThem($parts, 'id', 'title'))}}
+				{{select('Parça', 'part_id', listThem($parts, 'id', 'title'), $partId)}}
 				{{text('Adet', 'quantity')}}
 			</div>
 			<div class="form-actions">
 				<div class="row">
 					<div class="col-md-offset-2 col-md-10">
-						{{submit('Ekle')}}
+						{{addButton()}}
 					</div>
 				</div>
 			</div>
@@ -29,7 +29,7 @@
 
 @section('breadcrumb')
 {{breadcrumb([
-	['Hoem', 'homePage'],
+	['Home', 'homePage'],
 	['Depo', '#'],
 	['Lotlar', 'lots'],
 	['Yeni']

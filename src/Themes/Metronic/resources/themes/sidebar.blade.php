@@ -10,7 +10,7 @@
 					<!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
 					<!-- DOC: Set data-keep-expand="true" to keep the submenues expanded -->
 					<!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
-					<ul class="page-sidebar-menu page-sidebar-menu-light  page-header-fixed " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="50" style="padding-top: 20px">
+					<ul class="page-sidebar-menu page-sidebar-menu-closed page-sidebar-menu-light  page-header-fixed " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="50" style="padding-top: 20px">
 						<!-- DOC: To remove the sidebar toggler from the sidebar you just need to completely remove the below "sidebar-toggler-wrapper" LI element -->
 						<li class="sidebar-toggler-wrapper hide">
 							<!-- BEGIN SIDEBAR TOGGLER BUTTON -->
@@ -40,15 +40,33 @@
 							<!-- END RESPONSIVE QUICK SEARCH FORM -->
 						<!-- </li> -->
 						<li class="nav-item start @if(isset($theme['first']) and $theme['first'] == 'manufacturing') active @endif">
-							<a href="{{route('productionOrders')}}" class="nav-link nav-toggle">
+							<a href="javascript:;" class="nav-link nav-toggle">
 								<i class="fa fa-industry"></i>
 								<span class="title">İmalat</span>
+								<span class="arrow"></span>
 							</a>
+							<ul class="sub-menu">
+								<li class="nav-item @if(isset($theme['second']) and $theme['second'] == 'company') active @endif">
+									<a href="{{route('productionOrders')}}" class="nav-link ">
+										<span class="title">İmalat</span>
+									</a>
+								</li>
+								<li class="nav-item @if(isset($theme['second']) and $theme['second'] == 'order') active @endif"">
+									<a href="{{route('operationsOfManufacturing')}}" class="nav-link ">
+										<span class="title">Operasyonlar</span>
+									</a>
+								</li>
+								<li class="nav-item @if(isset($theme['second']) and $theme['second'] == 'order') active @endif"">
+									<a href="{{route('centersOfManufacturing')}}" class="nav-link ">
+										<span class="title">İş İstasyonları</span>
+									</a>
+								</li>
+							</ul>
 						</li>
 						<li class="nav-item @if(isset($theme['first']) and $theme['first'] == 'crm') active @endif">
 							<a href="javascript:;" class="nav-link nav-toggle">
 								<i class="fa fa-opencart"></i>
-								<span class="title">Müşteriler</span>
+								<span class="title">CRM</span>
 								<span class="arrow"></span>
 							</a>
 							<ul class="sub-menu">
@@ -83,7 +101,7 @@
 								</li>
 							</ul>
 						</li>
-						<li class="nav-item last @if(isset($theme['first']) and $theme['first'] == 'production') active @endif">
+						<li class="nav-item @if(isset($theme['first']) and $theme['first'] == 'production') active @endif">
 							<a href="javascript:;" class="nav-link nav-toggle">
 								<i class="fa fa-bolt"></i>
 								<span class="title">Üretim Yapılandırma</span>
@@ -117,9 +135,39 @@
 								</li>
 							</ul>
 						</li>
+						<li class="nav-item last">
+							<a data-toggle="modal" href="#fast" class="nav-link nav-toggle">
+								<i class="fa fa-star"></i>
+								<span class="title">Hızlı Git</span>
+								<span class="arrow"></span>
+							</a>
+						</li>
 					</ul>
 					<!-- END SIDEBAR MENU -->
 					<!-- END SIDEBAR MENU -->
 				</div>
 		   <!-- END SIDEBAR -->
 			</div>
+
+					<div id="fast" class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+									<h4 class="modal-title">'.$title.'</h4>
+								</div>
+								<div class="modal-body">
+									<p>
+										{{Form::open(['route'=>'goFast'])}}
+											{{Form::text('key', null, ['class' => 'form-control'])}}
+											{{Form::submit('Git', ['class'=>'form-control'])}}
+										{{Form::close()}}
+									</p>
+								</div>
+								<div class="modal-footer">
+									<button type="button" data-dismiss="modal" class="btn default">İptal</button>
+									<a href="'.route($route, $routeDetail).'" class="btn blue-hoki">Sil</a>
+								</div>
+							</div>
+						</div>
+					</div>

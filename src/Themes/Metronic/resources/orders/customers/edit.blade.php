@@ -1,16 +1,16 @@
 @extends('zahmetsizce::themes.main')
 
 @section('content')
-	<h3>Müşteri Düzenle</h3>
+<h3 class="page-title">Müşteri Düzenle</h3>
 	{{open(['editCompany', $detail['id']])}}
 		<div class="form-body">
-			{{text(trans('e.companyCode'), 'companyCode', $detail['company_code'])}}
-			{{text(trans('e.companyName'), 'name', $detail['name'])}}
+			{{text('Müşteri Kodu', 'companyCode', $detail['company_code'])}}
+			{{text('Adı', 'name', $detail['name'])}}
 		</div>
 		<div class="form-actions">
 			<div class="row">
 				<div class="col-md-offset-3 col-md-9">
-					{{submit(trans('e.edit'))}}
+					{{editButton()}}
 				</div>
 			</div>
 		</div>
@@ -20,11 +20,12 @@
 @section('breadcrumb')
 {{breadcrumb([
 	['Home', 'homePage'],
+	['CRM', '#'],
 	['Müşteriler', '#'],
 	['Düzenle']
 ])}}
 @endsection
 
 @section('title')
-	{{trans('e.companyEdit')}}
+	Müşteri Düzenle
 @endsection

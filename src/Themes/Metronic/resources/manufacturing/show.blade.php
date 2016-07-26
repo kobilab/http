@@ -5,16 +5,7 @@
 @section('content')
 <h3 class="page-title"> Üretim Emri İçin Gerekli Olan Parça Detayları </h3>
 	<table class="table table-striped table-bordered table-hover order-column" id="sample_1">
-		<thead>
-			<tr>
-				<th>Parça</th>
-				<th>Gereken Adet</th>
-				<th>Ayırtılan Adet</th>
-				<th>Açıklama</th>
-				<th>Alt Parçaları</th>
-				<th>İşlemler</th>
-			</tr>
-		</thead>
+		{{tableTitles(['Parça', 'Gereken Adet', 'Ayırtılan Adet', 'Açıklama', 'Alt Parçaları', 'İşlemler'])}}
 		<tbody>
 			@foreach($gerekenMalzemeler as $partId => $value)
 				@foreach($value as $k)
@@ -37,24 +28,17 @@
 								@endforeach
 							</td>
 							<td>
-							   <div class="btn-group">
-									<button class="btn btn-xs green dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false"> İşlemler
-										<i class="fa fa-angle-down"></i>
-									</button>
-										<ul class="dropdown-menu" role="menu">
-										<li>
-											@if($k['remainder']>0)
-												@if($k->getAvailableLots->count()>0)
-													<a href="{{route('consumeProductionNeededParts', $k['id'])}}">Tüket</a>
-												@else
-													Depoda tanımlı parça yok
-												@endif
-											@else
-												Tamamlandı
-											@endif
-										</li>
-									</ul>
-								</div>
+								@if($k['remainder']>0)
+									@if($k->getAvailableLots->count()>0)
+										{{buttonGroup('İşlemler', [
+											'<a href="'.route('consumeProductionNeededParts', $k['id']).'">Tüket</a>'
+										])}}
+									@else
+										Depoda tanımlı parça yok
+									@endif
+								@else
+									Tamamlandı
+								@endif
 							</td>
 						</tr>
 					@else
@@ -101,95 +85,103 @@
 	</table>
 	<h3>Yapılacak işlemler</h3>
 	<table class="table table-bordered">
-		@foreach($islemler as $partId => $value)
-			<tr>
-				<th colspan="4">{{$value[0]->getPart['title']}} Parçası İçin Yapılacak İşlemler</th>
-			</tr>
-			@foreach($value as $k)
+		{{tableTitles(['Operasyon', 'İstasyon', 'Kalan Adet', 'İşlemler'])}}
+		<tbody>
+			@foreach($islemler as $partId => $value)
 				<tr>
-					<td>{{$k->getWorkType['title']}}</td>
-					<td>{{$k->getWorkCenter['title']}}</td>
-					<td>{{$k['remainder']}}</td>
-					<td>
-						@if($k['status']==1)
-						   <div class="btn-group">
-								<button class="btn btn-xs green dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false"> İşlemler
-									<i class="fa fa-angle-down"></i>
-								</button>
-									<ul class="dropdown-menu" role="menu">
-									<li>
-										<a href="{{route('finishProductionRotation', $k['id'])}}">Tamamla</a>
-									</li>
-									<li>
-										<a data-toggle="modal" href="#{{$k['id']}}"><i class="icon-trash"></i> İş İstasyonu Tanımla </a>
-									</li>
-									<li>
-										<a data-toggle="modal" href="#{{$k['id']}}isinbikismi"><i class="icon-trash"></i> İş İstasyonu Tanımla </a>
-									</li>
-								</ul>
-							</div>
-						@else
-							Tamamlandı
-						@endif
-					</td>
+					<th colspan="4">{{$value[0]->getPart['title']}} Parçası İçin Yapılacak İşlemler</th>
 				</tr>
-					<div id="{{$k['id']}}" class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="true">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-									<h4 class="modal-title">İş İstasyonu Tanımla</h4>
+				@foreach($value as $k)
+					<tr>
+						<td>{{$k->getWorkType['title']}}</td>
+						<td>
+							@if($k->getWorkCenter['title']!==null)
+								{{$k->getWorkCenter['title']}}
+							@else
+								-
+							@endif
+						</td>
+						<td>{{numberFormat($k['remainder'])}}</td>
+						<td>
+							@if($k['status']==1)
+							   <div class="btn-group">
+									<button class="btn btn-xs green dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false"> İşlemler
+										<i class="fa fa-angle-down"></i>
+									</button>
+										<ul class="dropdown-menu" role="menu">
+										<li>
+											<a href="{{route('finishProductionRotation', $k['id'])}}">Tamamla</a>
+										</li>
+										<li>
+											<a data-toggle="modal" href="#{{$k['id']}}"><i class="icon-trash"></i> İş İstasyonu Tanımla </a>
+										</li>
+										<li>
+											<a data-toggle="modal" href="#{{$k['id']}}isinbikismi"><i class="icon-trash"></i> İşin Bir Kısmını Tamamla </a>
+										</li>
+									</ul>
 								</div>
-								<div class="modal-body">
-									<p>
-									{{open(['defineWorkCenterForManufacturing', $k['id']])}}
-										{{Form::select('workCenterId', $k['stations'], $k['work_center_id'], ['class' => 'form-control'])}}
-									
-									</p>
-								</div>
-								<div class="modal-footer">
-									{{submit('Ata')}}
-									{{close()}}
+							@else
+								Tamamlandı
+							@endif
+						</td>
+					</tr>
+						<div id="{{$k['id']}}" class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+										<h4 class="modal-title">İş İstasyonu Tanımla</h4>
+									</div>
+									<div class="modal-body">
+										<p>
+										{{open(['defineWorkCenterForManufacturing', $k['id']])}}
+											{{Form::select('workCenterId', $k['stations'], $k['work_center_id'], ['class' => 'form-control'])}}
+										
+										</p>
+									</div>
+									<div class="modal-footer">
+										{{submit('Ata')}}
+										{{close()}}
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-					<div id="{{$k['id']}}isinbikismi" class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="true">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-									<h4 class="modal-title">İş İstasyonu Tanımla</h4>
-								</div>
-								<div class="modal-body">
-									<p>
-									{{open(['isinBiKisminiYap', $k['id']])}}
-										{{Form::text('remainder', $k['remainder'], ['class' => 'form-control'])}}
-									
-									</p>
-								</div>
-								<div class="modal-footer">
-									{{submit('Ata')}}
-									{{close()}}
+						<div id="{{$k['id']}}isinbikismi" class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+										<h4 class="modal-title">İş İstasyonu Tanımla</h4>
+									</div>
+									<div class="modal-body">
+										<p>
+										{{open(['isinBiKisminiYap', $k['id']])}}
+											{{Form::text('remainder', $k['remainder'], ['class' => 'form-control'])}}
+										
+										</p>
+									</div>
+									<div class="modal-footer">
+										{{submit('Ata')}}
+										{{close()}}
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
+				@endforeach
 			@endforeach
-		@endforeach
+		</tbody>
 	</table>
 	<h3>Üretim Sonucu Oluşacak Parçalar</h3>
 	<table class="table table-bordered">
-		<tr>
-			<th>Parça</th>
-			<th>Adet</th>
-		</tr>
-		@foreach($olusacaklar as $e)
-			<tr>
-				<td>{{$e->getPart['title']}}</td>
-				<td>{{numberFormat($e['quantity'])}}</td>
-			</tr>
-		@endforeach
+		{{tableTitles(['Parça', 'Adet'])}}
+		<tbody>
+			@foreach($olusacaklar as $e)
+				<tr>
+					<td>{{$e->getPart['title']}}</td>
+					<td>{{numberFormat($e['quantity'])}}</td>
+				</tr>
+			@endforeach
+		</tbody>
 	</table>
 @endsection
 
@@ -224,7 +216,12 @@ var TableDatatablesManaged = function () {
 				"targets": 5,
 				"orderable": false,
 				"searchable": false
-			}],
+			},
+			{
+				"targets": [0,1,2,3,4],
+				"orderable": false
+			}
+			],
 
 			"lengthMenu": [
 				[5, 15, 20, -1],
@@ -275,8 +272,10 @@ if (App.isAngularJsApp() === false) {
 		</button>
 		<ul class="dropdown-menu pull-right" role="menu">
 			<li>
-				 <a data-toggle="modal" href="#sila">
-				 	<i class="icon-trash"></i> Sil </a>
+				{{deleteLink('sila', null, true)}}
+			</li>
+			<li>
+				{{editLink('editProductionOrder', $detail['id'])}}
 			</li>
 		</ul>
 	</div>

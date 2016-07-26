@@ -15,7 +15,7 @@
 			</tr>
 			<tr>
 				<th>Adet</th>
-				<td>{{numberFormat($detail['quantity'])}}</td>
+				<td>{{numberFormat($detail['quantity'])}} {{$detail->getPart->getUnit['short_form']}}</td>
 			</tr>
 		</table>
 	</div>
@@ -44,10 +44,10 @@
 		</button>
 		<ul class="dropdown-menu pull-right" role="menu">
 			<li>
-				<a data-toggle="modal" href="#sil{{$detail['id']}}"><i class="icon-user"></i> Sil </a>
+				{{deleteLink('sil', null, true)}}
 			</li>
 		</ul>
-		{{modal('sil'.$detail['id'], 'deleteLot', $detail['id'])}}
+		{{modal('sil', 'deleteLot', $detail['id'])}}
 	</div>
 </div>
 @endsection

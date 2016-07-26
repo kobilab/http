@@ -47,7 +47,7 @@
 		 */
 		public function create()
 		{
-			$this->data['routes'] = Routes::all();
+			$this->data['routes'] = Routes::orderBy('title')->get();
 
 			return view('zahmetsizce::production.boms.create', $this->data);
 		}
@@ -62,7 +62,9 @@
 			$result = Boms::setFromAllInput()->setRulesForTable('boms');
 
 			if (!$result->autoCreate()) {
-				return redirectTo('newBom');
+				return redirectTo('newBom')
+						->withErrors($result->getErrors())
+						->withInput($result->getOld());
 			} else {
 				return redirectTo('boms');
 			}
@@ -92,7 +94,9 @@
 			$result = Boms::setFromAllInput()->setId($bomId)->setRulesForTable('boms');
 
 			if (!$result->autoUpdate()) {
-				return redirectTo('editBom', $bomId);
+				return redirectTo('editBom', $bomId)
+						->withErrors($result->getErrors())
+						->withInput($result->getOld());
 			} else {
 				return redirectTo('boms');
 			}

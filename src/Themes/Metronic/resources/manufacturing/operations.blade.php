@@ -3,27 +3,19 @@
 @set('datatablesContent', true)
 
 @section('content')
-<h3 class="page-title"> Rotalar </h3>
+<h3 class="page-title"> Operasyonlar </h3>
 <div class="row">
 	<div class="col-md-12">
 		<table class="table table-striped table-bordered table-hover order-column" id="sample_1">
-			{{tableTitles(['Rota Kodu', 'Rota Adı', 'İşlemler'])}}
+			{{tableTitles(['Operasyon Adı', 'Bulunan İşlem Sayısı', 'İşlemler'])}}
 			<tbody>
-				@foreach($routes as $rota)
+				@foreach($operations as $rota)
 					<tr>
-						<td>{{$rota['route_code']}}</td>
-						<td>{{$rota['title']}}</td>
-						<td>
-						   <div class="btn-group">
-								{{buttonGroup('İşlemler', [
-									editLink('editRoute', $rota['id']),
-									showLink('showRoute', $rota['id']),
-									deleteLink('sil'.$rota['id'], null, true)
-								])}}
-							</div>
-							{{modal('sil'.$rota['id'], 'deleteRoute', $rota['id'])}}
-						</td>
+						<td>{{$rota->getWorkType['title']}}</td>
+						<td>{{$rota['sum']}}</td>
+						<td>{{createLink('İşleri', 'manufacturingOfJob', $rota['work_type_id'], 'link')}}</td>
 					</tr>
+					{{modal('sil'.$rota['id'], 'deleteWorkType', $rota['id'])}}
 				@endforeach
 			</tbody>
 		</table>
@@ -32,14 +24,14 @@
 @endsection
 
 @section('title')
-	Rotalar
+	Operasyonlar
 @endsection
 
 @section('breadcrumb')
 {{breadcrumb([
 	['Home', 'homePage'],
 	['Üretim Yapılandırma', '#'],
-	['Rotasyonlar']
+	['Operasyonlar']
 ])}}
 @endsection
 
@@ -123,7 +115,7 @@ if (App.isAngularJsApp() === false) {
 		</button>
 		<ul class="dropdown-menu pull-right" role="menu">
 			<li>
-				{{newLink('Rotasyon', 'newRoute')}}
+				{{newLink('Operasyon', 'newWorkType')}}
 			</li>
 		</ul>
 	</div>

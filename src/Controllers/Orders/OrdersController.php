@@ -59,10 +59,12 @@
 		 */
 		public function store()
 		{
-			$result = Orders::setFromAllInput()->setRulesForTable('orders');
+			$result = Orders::setFromAllInput()->setIt('status', 1)->setRulesForTable('orders');
 
 			if (!$result->autoCreate()) {
-				return redirectTo('newOrder');
+				return redirectTo('newOrder')
+						->withErrors($result->getErrors())
+						->withInput($result->getOld());
 			} else {
 				return redirectTo('orders');
 			}
@@ -106,7 +108,9 @@
 			$result = Orders::setFromAllInput()->setId($orderId)->setRulesForTable('orders');
 
 			if (!$result->autoUpdate()) {
-				return redirectTo('editOrder', $orderId);
+				return redirectTo('editOrder', $orderId)
+						->withErrors($result->getErrors())
+						->withInput($result->getOld());
 			} else {
 				return redirectTo('orders');
 			}

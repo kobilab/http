@@ -1,15 +1,16 @@
 @extends('zahmetsizce::themes.main')
 
 @section('content')
+<h3 class="page-title"> Yeni Müşteri </h3>
 	{{open('newCompany')}}
 		<div class="form-body">
-			{{text(trans('e.companyCode'), 'companyCode')}}
-			{{text(trans('e.companyName'), 'name')}}
+			{{text('Müşteri Kodu', 'company_code')}}
+			{{text('Müşteri Adı', 'name')}}
 		</div>
 		<div class="form-actions">
 			<div class="row">
 				<div class="col-md-offset-3 col-md-9">
-					{{submit(trans('e.add'))}}
+					{{addButton()}}
 				</div>
 			</div>
 		</div>
@@ -17,13 +18,14 @@
 @endsection
 
 @section('pageTitle')
-	{{trans('e.newCompany')}}
+	Yeni Müşteri
 @endsection
 
 @section('breadcrumb')
 {{breadcrumb([
 	['Home', 'homePage'],
-	['Müşteriler', '#'],
+	['CRM', '#'],
+	['Müşteriler', 'companies'],
 	['Yeni']
 ])}}
 @endsection

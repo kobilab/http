@@ -6,14 +6,15 @@
 	<div class="col-md-12">
 		{{open('newPart')}}
 			<div class="form-body">
-				{{text('Parça Kodu', 'part_code')}}
-				{{text('Başlık', 'title')}}
-				{{select('Öntanımlı Bom', 'default_bom', listThem($boms, 'id', 'title', true))}}
+				{{text('Parça Kodu', 'part_code', Input::old('part_code', null))}}
+				{{text('Başlık', 'title', Input::old('title', null))}}
+				{{select('Öntanımlı Bom', 'default_bom', listThem($boms, 'id', 'title', true), Input::old('default_bom', null))}}
+				{{select('Kopyala', 'copy', listThem($parts, 'id', 'title', true), Input::old('copy', null))}}
 			</div>
 			<div class="form-actions">
 				<div class="row">
 					<div class="col-md-offset-2 col-md-9">
-						{{submit('Ekle')}}
+						{{addButton()}}
 					</div>
 				</div>
 			</div>

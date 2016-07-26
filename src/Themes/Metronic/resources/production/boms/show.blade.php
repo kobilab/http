@@ -16,17 +16,16 @@
 			<td>
 				@if($detail->getComposedParts->count()>0)
 					<table class="table table-bordered">
-						<thead>
-							<tr>
-								<th>Parça</th>
-								<th>İşlemler</th>
-							</tr>
-						</thead>
+						{{tableTitles(['Parça', 'İşlemler'])}}
 						<tbody>
 							@foreach($detail->getComposedParts as $e)
 								<tr>
 									<td>{{$e->getPart['title']}}</td>
-									<td>{{sil('deleteComposedPartFromBom', $e['id'])}} {{linka('Parçayı İncele', 'showPart', $e->getPart['id'])}}</td>
+									<td>{{buttonGroup('İşlemler', [
+										createLink('Kaldır', 'deleteComposedPartFromBom', $e['id'], 'unlink'),
+										createLink('Parçayı İncele', 'showPart', $e['part_id'], 'info')
+									])}}
+									</td>
 								</tr>
 							@endforeach
 						</tbody>
@@ -41,19 +40,17 @@
 			<td>
 				@if($detail->getNeededParts->count()>0)
 					<table class="table table-bordered">
-						<thead>
-							<tr>
-								<th>Parça</th>
-								<th>Adet</th>
-								<th>İşlemler</th>
-							</tr>
-						</thead>
+						{{tableTitles(['Parça', 'Adet', 'İşlemler'])}}
 						<tbody>
 							@foreach($detail->getNeededParts as $e)
 								<tr>
 									<td>{{$e->getPart['title']}}</td>
 									<td>{{numberFormat($e['quantity'])}}</td>
-									<td>{{sil('deleteNeededPartFromBom', $e['id'])}} {{edit('editNeededPartForBom', $e['id'])}} {{linka('Parçayı İncele', 'showPart', $e->getPart['id'])}}</td>
+									<td>{{buttonGroup('İşlemler', [
+										createLink('Kaldır', 'deleteNeededPartFromBom', $e['id'], 'unlink'),
+										editLink('editNeededPartForBom', $e['id']),
+										createLink('Parçayı İncele', 'showPart', $e['part_id'], 'info')
+									])}}</td>
 								</tr>
 							@endforeach
 						</tbody>
@@ -68,17 +65,15 @@
 			<td>
 				@if($detail->getConnectedParts->count()>0)
 					<table class="table table-bordered">
-						<thead>
-							<tr>
-								<th>Parça</th>
-								<th>İşlemler</th>
-							</tr>
-						</thead>
+						{{tableTitles(['Parça', 'İşlemler'])}}
 						<tbody>
 							@foreach($detail->getConnectedParts as $e)
 								<tr>
 									<td>{{$e->getPart['title']}}</td>
-									<td>{{linka('Kaldır', 'removeConnectionPartBom', $e['id'])}} {{linka('Parçayı İncele', 'showPart', $e->getPart['id'])}}</td>
+									<td>{{buttonGroup('İşlemler', [
+										createLink('Kaldır', 'removeConnectionPartBom', $e['id'], 'unlink'),
+										createLink('Parçayı İncele', 'showPart', $e['part_id'], 'info')
+									])}}
 								</tr>
 							@endforeach
 						</tbody>
@@ -93,13 +88,7 @@
 			<td>
 				@if($detail->getConnectedRoutes->count()>0)
 					<table class="table table-bordered">
-						<thead>
-							<tr>
-								<th>Rota</th>
-								<th>Açıklama</th>
-								<th>İşlemler</th>
-							</tr>
-						</thead>
+						{{tableTitles(['Rota', 'Açıklama', 'İşlemler'])}}
 						<tbody>
 							@foreach($detail->getConnectedRoutes as $e)
 								<tr>
@@ -110,13 +99,13 @@
 										@endif
 									</td>
 									<td>
-										{{linka('Kaldır', 'removeConnectionBomRoute', $e['id'])}}
+										{{createLink('Kaldır', 'removeConnectionBomRoute', $e['id'], 'unlink')}}
 										@if($e['default']==1)
-											{{linka('Öntanımlı yap', 'makeRouteDefaultForBom', $e['id'])}}
+											{{createLink('Öntanımlı yap', 'makeRouteDefaultForBom', $e['id'], 'link')}}
 										@else
-											{{linka('Öntanımı Kaldır', 'removeDefaultRouteFromRoute', $e['id'])}}
+											{{createLink('Öntanımı kaldır', 'removeDefaultRouteFromRoute', $e['id'], 'unlink')}}
 										@endif
-										{{linka('Rotayı İncele', 'showRoute', $e->getRoute['id'])}}
+										{{createLink('Rotayı İncele', 'showRoute', $e['route_id'], 'info')}}
 									</td>
 								</tr>
 							@endforeach
@@ -151,31 +140,23 @@
 		</button>
 		<ul class="dropdown-menu pull-right" role="menu">
 			<li>
-				 <a data-toggle="modal" href="#sil">
-				 	<i class="icon-trash"></i> Sil </a>
+				{{deleteLink('sil', null, true)}}
 			</li>
 			<li>
-				<a href="{{route('editBom', $detail['id'])}}">
-					<i class="icon-bell"></i> Düzenle </a>
+				{{editLink('editBom', $detail['id'])}}
 			</li>
 			<li>
-				<a href="{{route('addComposedPartToBom', $detail['id'])}}">
-					<i class="icon-star"></i> Oluşan Parça Ekle </a>
+				{{createLink('Oluşan Parça Ekle', 'addComposedPartToBom', $detail['id'], 'star')}}
 		   	</li>
 			<li>
-				<a href="{{route('addNeededPartToBom', $detail['id'])}}">
-					<i class="icon-star"></i> Gerekli Parça Ekle </a>
+				{{createLink('Gerekli Parça Ekle', 'addNeededPartToBom', $detail['id'], 'star')}}
 		   	</li>
 			<li class="divider"> </li>
 			<li>
-				<a href="{{route('definePartToBom', $detail['id'])}}">
-					<i class="icon-flag"></i> Parça Tanımla
-				</a>
+				{{createLink('Parça Tanımla', 'definePartToBom', $detail['id'], 'link')}}
 			</li>
 			<li>
-				<a href="{{route('defineRouteToBom', $detail['id'])}}">
-					<i class="icon-star"></i> Rota Tanımla
-				</a>
+				{{createLink('Rota Tanımla', 'defineRouteToBom', $detail['id'], 'link')}}
 			</li>
 		</ul>
 	</div>

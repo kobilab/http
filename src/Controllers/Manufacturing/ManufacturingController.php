@@ -71,7 +71,9 @@
 			$result = ProductionOrders::setFromAllInput()->setRulesForTable('production_order')->autoCreate();
 
 			if (!$result) {
-				return redirectTo('newProductionOrder');
+				return redirectTo('newProductionOrder')
+						->withErrors($result->getErrors())
+						->withInput($result->getOld());
 			} else {
 				return redirectTo('productionOrders');
 			}
@@ -141,7 +143,7 @@
 
 			ProductionControl::fire($detay['production_order_id']);
 
-			return redirectTo('productionOrders');
+			return redirectTo('showProductionOrder', ProductionOrderRotations::find($productionRotationId)['production_order_id']);
 		}
 		
 		/**
@@ -252,10 +254,10 @@ $objPHPExcel->getProperties()->setCreator("Maarten Balliauw")
 $k = 2;
 foreach(ProductionOrderRotations::where('work_type_id', $workTypeId)->get() as $emir) {
 	$objPHPExcel->setActiveSheetIndex(0)
-	            ->setCellValue('A'.$k, $emir->getProductionOrder['production_order_code'])
-	            ->setCellValue('B'.$k, $emir->getPart['part_code'])
-	            ->setCellValue('C'.$k, 'Hello')
-	            ->setCellValue('D'.$k, 'world!');
+				->setCellValue('A'.$k, $emir->getProductionOrder['production_order_code'])
+				->setCellValue('B'.$k, $emir->getPart['part_code'])
+				->setCellValue('C'.$k, 'Hello')
+				->setCellValue('D'.$k, 'world!');
 	$k++;
 }
 $objPHPExcel->setActiveSheetIndex(0);
@@ -271,5 +273,75 @@ return response()->file(__DIR__.'/ManufacturingController.xlsx');
 			$this->data['list'] = ProductionOrderRotations::where('work_center_id', $workCenterId)->get();
 
 			return view('zahmetsizce::manufacturing.centerlist', $this->data);
+		}
+
+		public function getOutputMachineList($workCenterId)
+		{
+define('EOL',(PHP_SAPI == 'cli') ? PHP_EOL : '<br />');
+/** Include PHPExcel */
+// Create new PHPExcel object
+$objPHPExcel = new PHPExcel();
+// Set document properties
+$objPHPExcel->getProperties()->setCreator("Maarten Balliauw")
+							 ->setLastModifiedBy("Maarten Balliauw")
+							 ->setTitle("PHPExcel Test Document")
+							 ->setSubject("PHPExcel Test Document")
+							 ->setDescription("Test document for PHPExcel, generated using PHP classes.")
+							 ->setKeywords("office PHPExcel php")
+							 ->setCategory("Test result file");
+// Add some data
+$k = 2;
+foreach(ProductionOrderRotations::where('work_center_id', $workCenterId)->get() as $emir) {
+	$objPHPExcel->setActiveSheetIndex(0)
+				->setCellValue('A'.$k, $emir->getProductionOrder['production_order_code'])
+				->setCellValue('B'.$k, $emir->getPart['part_code'])
+				->setCellValue('C'.$k, 'Hello')
+				->setCellValue('D'.$k, 'world!');
+	$k++;
+}
+$objPHPExcel->setActiveSheetIndex(0);
+// Save Excel 2007 file
+$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+$objWriter->save(str_replace('.php', '.xlsx', __FILE__));
+return response()->file(__DIR__.'/ManufacturingController.xlsx');
+		}
+
+		public function operationsOfManufacturing()
+		{
+			$this->data['operations'] = ProductionOrderRotations::selectRaw('work_type_id, count(*) as sum')
+																->groupBy('work_type_id')
+																->get();
+
+			return view('zahmetsizce::manufacturing.operations', $this->data);
+		}
+
+		public function centersOfManufacturing()
+		{
+			$this->data['centers'] = ProductionOrderRotations::selectRaw('work_center_id, count(*) as sum')
+															->where('work_center_id', '!=', 0)
+															->groupBy('work_center_id')
+															->get();
+
+			return view('zahmetsizce::manufacturing.centers', $this->data);
+		}
+
+		public function edit($productionOrderId)
+		{
+			$this->data['detail'] = ProductionOrders::find($productionOrderId);
+
+			return view('zahmetsizce::manufacturing.edit', $this->data);
+		}
+
+		public function update($productionOrderId)
+		{
+			$result = ProductionOrders::setFromAllInput()->setId($productionOrderId)->setRulesForTable('production_order_edit')->autoUpdate();
+
+			if (!$result) {
+				return redirectTo('newProductionOrder')
+						->withErrors($result->getErrors())
+						->withInput($result->getOld());
+			} else {
+				return redirectTo('productionOrders');
+			}			
 		}
 	}

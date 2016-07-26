@@ -1,22 +1,31 @@
 @extends('zahmetsizce::themes.main')
 
-@section('boxBodyClass') form @endsection
-
 @section('content')
+<h3 class="page-title"> Sipariş Detayını Düzenle </h3>
 	{{open(['editPartOfOrder', $detail['id']])}}
 		<div class="form-body">
-			{{text(trans('e.quantity'), 'quantity', $detail['quantity'])}}
+			{{text('Adet', 'quantity', $detail['quantity'])}}
+			{{select('Durumu', 'status', [1=>'İşlemde', 2=>'Tamamlandı'])}}
 		</div>
 		<div class="form-actions">
 			<div class="row">
 				<div class="col-md-offset-3 col-md-9">
-					{{submit(trans('e.edit'))}}
+					{{editButton()}}
 				</div>
 			</div>
 		</div>
 	{{close()}}
 @endsection
 
-@section('pageTitle')
-	{{trans('e.editPartOfOrder')}}
+@section('title')
+	Sipariş Detayını Düzenle
+@endsection
+
+@section('breadcrumb')
+{{breadcrumb([
+	['Home', 'homePage'],
+	['CRM', '#'],
+	['Siparişler', 'orders'],
+	['Sipariş Detayını Düzenle']
+])}}
 @endsection

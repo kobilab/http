@@ -34,7 +34,7 @@
 		 */
 		public function index()
 		{
-			$this->data['lots'] = Lots::all();
+			$this->data['lots'] = Lots::where('quantity', '!=', 0)->get();
 
 			return view('zahmetsizce::inventory.list', $this->data);
 		}
@@ -45,9 +45,10 @@
 		 * @see    burda depoya eklenecek olan parçaların depolanabilir gibi seçeneği olması lazım
 		 * @return view
 		 */
-		public function create()
+		public function create($partId=null)
 		{
 			$this->data['parts'] = Parts::all();
+			$this->data['partId'] = $partId;
 
 			return view('zahmetsizce::inventory.create', $this->data);
 		}
@@ -62,7 +63,9 @@
 			$result = Lots::setFromAllInput()->setRulesForTable('lots');
 
 			if (!$result->autoCreate()) {
-				return redirectTo('newLot');
+				return redirectTo('newLot')
+						->withErrors($result->getErrors())
+						->withInput($result->getOld());
 			} else {
 				return redirectTo('lots');
 			}

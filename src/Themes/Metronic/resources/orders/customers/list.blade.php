@@ -7,22 +7,18 @@
 <div class="row">
 	<div class="col-md-12">
 		<table class="table table-striped table-bordered table-hover order-column" id="sample_1">
-			<thead>
-				<tr>
-					<th>Müşteri Kodu</th>
-					<th>Müşteri Adı</th>
-					<th>İşlemler</th>
-				</tr>
-			</thead>
+			{{tableTitles(['Müşteri Kodu', 'Müşteri Adı', 'İşlemler'])}}
 			<tbody>
 				@foreach($companies as $musteri)
 				<tr>
 					<td>{{$musteri['company_code']}}</td>
 					<td>{{$musteri['name']}}</td>
 					<td>
-						{{edit('editCompany', $musteri['id'])}}
-						{{show('showCompany', ['company_id' => $musteri['id']])}}
-						{{sil('deleteCompany', $musteri['id'], $musteri['id'])}}
+						{{buttonGroup('İşlemler', [
+							editLink('editCompany', $musteri['id']),
+							showLink('showCompany', ['company_id'=>$musteri['id']]),
+							deleteLink('deleteCompany', $musteri['id'])
+						])}}
 					</td>
 				</tr>
 				@endforeach
@@ -38,8 +34,8 @@
 @section('breadcrumb')
 {{breadcrumb([
 	['Home', 'homePage'],
-	['Müşteriler', '#'],
-	['Parçalar']
+	['CRM', '#'],
+	['Müşteriler']
 ])}}
 @endsection
 
@@ -78,11 +74,11 @@ var TableDatatablesManaged = function () {
 			}],
 
 			"lengthMenu": [
-				[5, 15, 20, -1],
-				[5, 15, 20, "All"] // change per page values here
+				[5, 15, 25, -1],
+				[5, 15, 25, "All"] // change per page values here
 			],
 			// set the initial value
-			"pageLength": 5,			
+			"pageLength": 15,			
 			"pagingType": "bootstrap_full_number",
 			"order": [
 				[1, "asc"]
@@ -123,8 +119,7 @@ if (App.isAngularJsApp() === false) {
 		</button>
 		<ul class="dropdown-menu pull-right" role="menu">
 			<li>
-				<a href="{{route('newCompany')}}">
-					<i class="icon-plus"></i> Yeni Parça </a>
+				{{newLink('Müşteri', 'newCompany')}}
 			</li>
 		</ul>
 	</div>

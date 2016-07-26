@@ -6,13 +6,7 @@
 	<div class="col-md-12">
 		{{open(['consumeProductionNeededParts', $detail['id']])}}
 			<table class="table table-striped table-bordered table-hover order-column" id="sample_1">
-				<thead>
-					<tr>
-						<th> Lot Kodu </th>
-						<th> Mevcut Adet </th>
-						<th> Kullanılacak Adet </th>
-					</tr>
-				</thead>
+				{{tableTitles(['Lot Kodu', 'Mevcut Adet', 'Kullanılacak Adet'])}}
 				<tbody>
 					@foreach($detail->getAvailableLots as $each)
 					<tr>

@@ -7,50 +7,20 @@
 <div class="row">
 	<div class="col-md-12">
 		<table class="table table-striped table-bordered table-hover order-column" id="sample_1">
-			<thead>
-				<tr>
-					<th> BOM Kodu </th>
-					<th> BOM Adı </th>
-					<th> İşlemler </th>
-				</tr>
-			</thead>
+			{{tableTitles(['BOM Kodu', 'BOM Adı', 'İşlemler'])}}
 			<tbody>
 				@foreach($boms as $bom)
 					<tr>
 						<td>{{$bom['bom_code']}}</td>
 						<td>{{$bom['title']}}</td>
-						<td>
-						   <div class="btn-group">
-								<button class="btn btn-xs green dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false"> İşlemler
-									<i class="fa fa-angle-down"></i>
-								</button>
-								<ul class="dropdown-menu" role="menu">
-									<li>
-										<a href="{{route('editBom', $bom['id'])}}">
-											<i class="icon-docs"></i> Düzenle </a>
-									</li>
-									<li>
-										<a href="{{route('showBom', $bom['id'])}}">
-											<i class="icon-tag"></i> İncele </a>
-									</li>
-									<li>
-										<a data-toggle="modal" href="#sil{{$bom['id']}}">
-											<i class="icon-user"></i> Sil </a>
-									</li>
-									<li class="divider"> </li>
-									<li>
-										<a href="{{route('definePartToBom', $bom['id'])}}">
-											<i class="icon-flag"></i> Parça Tanımla
-										</a>
-									</li>
-									<li>
-										<a href="{{route('defineRouteToBom', $bom['id'])}}">
-											<i class="icon-star"></i> Rota Tanımla
-										</a>
-									</li>
-								</ul>
-							</div>
-						</td>
+						<td>{{buttonGroup('İşlemler', [
+							editLink('editBom', $bom['id']),
+							showLink('showBom', $bom['id']),
+							deleteLink('sil'.$bom['id'], null, true),
+							'divider',
+							createLink('Parça Tanımla', 'definePartToBom', $bom['id'], 'link'),
+							createLink('Rota Tanımla', 'defineRouteToBom', $bom['id'], 'link')
+						])}}</td>
 					</tr>
 					{{modal('sil'.$bom['id'], 'deleteBom', $bom['id'])}}
 				@endforeach
@@ -107,11 +77,11 @@ var TableDatatablesManaged = function () {
 			}],
 
 			"lengthMenu": [
-				[5, 15, 20, -1],
-				[5, 15, 20, "All"] // change per page values here
+				[5, 15, 25, -1],
+				[5, 15, 25, "Hepsi"] // change per page values here
 			],
 			// set the initial value
-			"pageLength": 10,			
+			"pageLength": 15,
 			"pagingType": "bootstrap_full_number",
 			"order": [
 				[1, "asc"]
@@ -152,8 +122,7 @@ if (App.isAngularJsApp() === false) {
 		</button>
 		<ul class="dropdown-menu pull-right" role="menu">
 			<li>
-				<a href="{{route('newBom')}}">
-					<i class="icon-plus"></i> Yeni Ürün Ağacı </a>
+				{{newLink('Ürün Ağacı', 'newBom')}}
 			</li>
 		</ul>
 	</div>

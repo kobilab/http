@@ -46,6 +46,7 @@
 		public function create()
 		{
 			$this->data['boms'] = Boms::all();
+			$this->data['parts'] = Parts::all();
 
 			return view('zahmetsizce::production.parts.create', $this->data);
 		}
@@ -60,7 +61,9 @@
 			$result = Parts::setFromAllInput()->setRulesForTable('parts');
 
 			if(!$result->autoCreate()) {
-				return redirectTo('newPart')->withErrors($result->errors());
+				return redirectTo('newPart')
+						->withErrors($result->getErrors())
+						->withInput($result->getOld());
 			} else {
 				return redirectTo('parts');
 			}
@@ -103,7 +106,9 @@
 			$result = Parts::setFromAllInput()->setId($partId)->setRulesForTable('parts');
 
 			if (!$result->autoUpdate()) {
-				return redirectTo('editPart', $partId);
+				return redirectTo('editPart', $partId)
+						->withErrors($result->getErrors())
+						->withInput($result->getOld());
 			} else {
 				return redirectTo('parts');
 			}

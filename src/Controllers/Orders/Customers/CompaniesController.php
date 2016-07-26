@@ -59,7 +59,9 @@
 			$result = Companies::setFromAllInput()->setRulesForTable('companies');
 
 			if(!$result->autoCreate()) {
-				return redirectTo('newCompany')->withErrors($result->errors());
+				return redirectTo('newCompany')
+						->withErrors($result->getErrors())
+						->withInput($result->getOld());
 			} else {
 				return redirectTo('companies');
 			}
@@ -89,7 +91,9 @@
 			$result = Companies::setFromAllInput()->setId($companyId)->setRulesForTable('companies');
 
 			if (!$result->autoUpdate()) {
-				return redirectTo('editCompany', $companyId);
+				return redirectTo('editCompany', $companyId)
+						->withErrors($result->getErrors())
+						->withInput($result->getOld());
 			} else {
 				return redirectTo('companies');
 			}

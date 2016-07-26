@@ -12,17 +12,12 @@
 			<td>
 				@if($detail->getStations->count()>0)
 					<table class="table table-bordered">
-						<thead>
-							<tr>
-								<th>İş İstasyon Adı</th>
-								<th>İşlemler</th>
-							</tr>
-						</thead>
+						{{tableTitles(['İş İstasyonu Adı', 'İşlemler'])}}
 						<tbody>
 							@foreach($detail->getStations as $e)
 								<tr>
 									<td>{{$e->getWorkCenter['title']}}</td>
-									<td><a href="{{route('removeConnectionWorkTypeWorkCenter', $e['id'])}}">Kaldır</a></td>
+									<td>{{createLink('Kaldır', 'removeConnectionWorkTypeWorkCenter', $e['id'], 'unlink')}}</td>
 								</tr>
 							@endforeach
 						</tbody>
@@ -57,20 +52,24 @@
 		</button>
 		<ul class="dropdown-menu pull-right" role="menu">
 			<li>
-				 <a data-toggle="modal" href="#sil">
-				 	<i class="icon-trash"></i> Sil </a>
+				{{editLink('editWorkType', $detail['id'])}}
 			</li>
 			<li>
-				<a href="{{route('editWorkType', $detail['id'])}}">
-					<i class="icon-bell"></i> Düzenle </a>
+				{{showLink('showWorkType', $detail['id'])}}
+			</li>
+
+			<li class="divider"> </li>
+			<li>
+				{{createLink('Operasyon İstasyonu Tanımla', 'defineWorkCenterToWorkType', $detail['id'], 'link')}}
 			</li>
 			<li>
-				<a href="{{route('defineWorkTypeToRoute', $detail['id'])}}">
-					<i class="icon-star"></i> Operasyon Tanımla </a>
-		   	</li>
+				{{createLink('İşleri', 'manufacturingOfJob', $detail['id'], 'star')}}
+			</li>
 			<li>
-				<a href="{{route('defineBomToRoute', $detail['id'])}}">
-					<i class="icon-star"></i> Ürün Ağacına Bağla </a>
+				{{deleteLink('sil', null, true)}}
+			</li>
+			<li>
+				{{createLink('Operasyon Tanımla', 'defineWorkTypeToRoute', $detail['id'], 'link')}}
 		   	</li>
 		</ul>
 	</div>

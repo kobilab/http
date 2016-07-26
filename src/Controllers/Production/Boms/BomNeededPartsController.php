@@ -78,6 +78,7 @@
 		/**
 		 * BOM için gerekli olan itemi düzenlemeye yarayan method
 		 *
+		 * @see    sayısız giriş yapılırsa ne olacak?
 		 * @param  integer $gerekenId BOM Gereken Item Id
 		 * @return redirect
 		 */

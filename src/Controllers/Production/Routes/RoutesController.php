@@ -58,7 +58,9 @@
 			$result = Routes::setFromAllInput()->setRulesForTable('routes')->autoCreate();
 
 			if (!$result) {
-				return redirectTo('newRoute');
+				return redirectTo('newRoute')
+						->withErrors($result->getErrors())
+						->withInput($result->getOld());
 			} else {
 				return redirectTo('routes');
 			}
@@ -88,7 +90,9 @@
 			$result = Routes::setId($routeId)->setFromAllInput()->setRulesForTable('routes')->autoUpdate();
 
 			if (!$result) {
-				return redirectTo('editRoute', $routeId);
+				return redirectTo('editRoute', $routeId)
+						->withErrors($result->getErrors())
+						->withInput($result->getOld());
 			} else {
 				return redirectTo('routes');
 			}
